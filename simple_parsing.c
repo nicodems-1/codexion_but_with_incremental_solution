@@ -6,24 +6,13 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/24 12:41:08 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/24 12:46:35 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct s_param
-{
-	int		number_of_coders;
-	int		time_to_burnout;
-	int		time_to_compile;
-	int		time_to_debug;
-	int		time_to_refactor;
-	int		number_of_compiles_required;
-	int		dongle_cooldown;
-	char	*scheduler;
-}			t_param;
+#include "include.h"
 
 int	valid_length(char *number)
 {
@@ -34,20 +23,6 @@ int	valid_length(char *number)
 		i++;
 	if (i > 10)
 		return (1);
-	return (0);
-}
-
-int	ft_is_number(char *number)
-{
-	int	i;
-
-	i = 0;
-	while (number[i] != 0)
-	{
-		if ((number[i] > '9' || number[i] < '0'))
-			return (1);
-		i++;
-	}
 	return (0);
 }
 
@@ -97,27 +72,13 @@ int	basic_parsing(char **av)
 	return (0);
 }
 
-int	match_word(char *word1, char *word2)
-{
-	int	i;
-
-	i = 0;
-	while (word1[i] != 0 || word2[i] != 0)
-	{
-		if (word1[i] != word2[i])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 int	parse_flag(char *flag)
 {
 	int	i;
 
 	if ((match_word("fifo", flag) == 0) || match_word("edf", flag) == 0)
 		return (0);
-	return(1);
+	return (1);
 }
 
 int	main(int ac, char **av)

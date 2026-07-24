@@ -79,12 +79,10 @@ int	parse_flag(char *flag)
 	return (1);
 }
 
-t_param	*parsing(int ac, char **av)
+t_param	*parsing(int ac, char **av, t_param *param)
 {
 	int		index;
-	t_param	*param;
 
-	param = malloc(sizeof(t_param));
 	if (ac != 10)
 	{
 		printf("Args count must be 9, current args count = %d\n", ac - 1);

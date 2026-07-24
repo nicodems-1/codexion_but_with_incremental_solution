@@ -16,6 +16,8 @@ int	main(int ac, char **av)
 {
 	t_param	*param;
 
-	param = parsing(ac, av);
+	param = malloc(sizeof(t_param));
+	param = parsing(ac, av, param);
 	initialization(param);
+	free(param);
 }

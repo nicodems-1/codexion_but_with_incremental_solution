@@ -27,7 +27,7 @@ typedef struct s_param
 
 int			match_word(char *word1, char *word2);
 int			ft_is_number(char *number);
-t_param		*parsing(int ac, char **av);
+t_param		*parsing(int ac, char **av, t_param *param);
 int			initialization(t_param *param);
 
 # include <pthread.h>

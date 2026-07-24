@@ -76,6 +76,33 @@ int basic_parsing(char **av)
     return(0);
 }
 
+int match_word(char *word1, char *word2)
+{
+    int i;
+
+    i = 0;
+    while(word1[i] != 0 || word2[i] != 0)
+    {
+        if (word1[i] != word2[i])
+            return(1);
+        i++;
+    }
+    return(0);
+}
+
+int parse_flag(char *flag)
+{
+    int i;
+    char *EDF;
+    char *FIFO;
+
+    FIFO = "fifo";
+    EDF ="edf";
+    if ((match_word(FIFO, flag) == 0) || match_word(EDF, flag) == 0)
+        return(0);
+    exit(1);
+}
+
 int main(int ac, char **av)
 {
     int index;
@@ -84,11 +111,19 @@ int main(int ac, char **av)
     param = malloc(sizeof(t_param));
     if (ac != 10)
     {
-        printf("\nArgs count must be 9, current args count = %d\n\n", ac-1);
+        printf("Args count must be 9, current args count = %d\n", ac-1);
         exit(1);
     }
     if (basic_parsing(av) == 1)
         exit(1);
-    if ((index = update_struct(av, param)) != 0)
-        printf("Error, arg[%d]: \"%s\" bigger than int max", index, av[index]);
+    else if ((index = update_struct(av, param)) != 0)
+    {
+        printf("Error, arg[%d]: \"%s\" is bigger than int max", index, av[index]);
+        exit(1);
+    }
+    else if(parse_flag(av[9]) == 1)
+    {
+        printf("Arg[9]: \"%s\" not accepted, instead try: \"edf\" or \"fifo\"", av[9]);
+        exit(1);
+    }
 }

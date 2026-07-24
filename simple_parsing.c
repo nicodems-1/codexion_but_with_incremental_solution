@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/24 12:39:25 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/24 12:41:08 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	parse_flag(char *flag)
 
 	if ((match_word("fifo", flag) == 0) || match_word("edf", flag) == 0)
 		return (0);
-	exit(1);
+	return(1);
 }
 
 int	main(int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/24 12:52:58 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/24 13:06:55 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,12 @@ typedef struct s_param
 	char	*scheduler;
 }			t_param;
 
-int	match_word(char *word1, char *word2);
-int	ft_is_number(char *number);
+int			match_word(char *word1, char *word2);
+int			ft_is_number(char *number);
+t_param		*parsing(int ac, char **av);
+int			initialization(t_param *param);
 
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
 #endif

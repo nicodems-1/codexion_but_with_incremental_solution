@@ -6,12 +6,10 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/24 12:46:35 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/24 13:06:58 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "include.h"
 
 int	valid_length(char *number)
@@ -81,7 +79,7 @@ int	parse_flag(char *flag)
 	return (1);
 }
 
-int	main(int ac, char **av)
+t_param	*parsing(int ac, char **av)
 {
 	int		index;
 	t_param	*param;
@@ -107,4 +105,5 @@ int	main(int ac, char **av)
 			av[9]);
 		exit(1);
 	}
+	return (param);
 }

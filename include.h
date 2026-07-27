@@ -12,6 +12,9 @@
 
 #ifndef INCLUDE_H
 # define INCLUDE_H
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
 
 typedef struct s_param
 {
@@ -25,12 +28,15 @@ typedef struct s_param
 	char	*scheduler;
 }			t_param;
 
+typedef struct s_coder
+{
+	pthread_t coder;
+	pthread_mutex_t coder_lock;
+}	t_coder;
+
 int			match_word(char *word1, char *word2);
 int			ft_is_number(char *number);
 t_param		*parsing(int ac, char **av, t_param *param);
 int			initialization(t_param *param);
 
-# include <pthread.h>
-# include <stdio.h>
-# include <stdlib.h>
 #endif

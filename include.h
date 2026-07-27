@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/24 13:06:55 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/27 19:07:17 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
+
+//parameter + timing
 typedef struct s_param
 {
 	int		number_of_coders;
@@ -27,23 +29,27 @@ typedef struct s_param
 	int		number_of_compiles_required;
 	int		dongle_cooldown;
 	char	*scheduler;
-	unsigned long time_since_beginning;
-	unsigned long time_elapsed;
+	pthread_mutex_t coder_lock;
+	pthread_mutex_t print_lock;
+	pthread_mutex_t check_time;
+	pthread_mutex_t lock_start;
 }			t_param;
 
+
+//coders with mutex
 typedef struct s_coder
 {	
 	pthread_t coder;
-	pthread_mutex_t coder_lock;
 	int id;
 	t_param *param;
 }	t_coder;
+
+//dongles
 
 int			match_word(char *word1, char *word2);
 int			ft_is_number(char *number);
 t_param		*parsing(int ac, char **av, t_param *param);
 int			initialization(t_param *param);
-int    time_initialization(t_param *param);
-int current_time(t_param *param);
-
+unsigned long current_time();
+int clean_exit();
 #endif

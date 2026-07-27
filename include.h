@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/27 19:07:17 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/27 19:39:56 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ typedef struct s_param
 	char	*scheduler;
 	pthread_mutex_t coder_lock;
 	pthread_mutex_t print_lock;
-	pthread_mutex_t check_time;
-	pthread_mutex_t lock_start;
 }			t_param;
 
 

@@ -14,14 +14,14 @@
 
 int print_logs(char *action, t_coder *coder)
 {
-	int total_time = 400;
-	printf("%d  %d  %s\n", total_time, coder->id, action);
+	current_time(coder->param);
+	printf("%ld %d %s\n", coder->param->time_elapsed, coder->id, action);
 	return (0);
 }
 
 void *routine(void *arguments)
 {
-	print_logs("is testing", arguments);
+	print_logs("is eating chicken", arguments);
 	return NULL;
 }
 
@@ -32,11 +32,13 @@ int	initialization(t_param *param)
 
 	index = 0;
 	coder = malloc(sizeof(t_coder)*(param->number_of_coders));
+	time_initialization(param);
 	while(index < (param->number_of_coders - 1))
 	{
 		pthread_create(&coder->coder, NULL, &routine, coder);
 		pthread_mutex_init(&coder->coder_lock, NULL);
-		coder->id = index;
+		coder->param = param;
+		coder->id = index + 1;
 		index++;
 	}
 	index = 0;
@@ -45,6 +47,5 @@ int	initialization(t_param *param)
 		pthread_join(coder->coder, NULL);
 		index++;
 	}
-	printf("%d\n", index);
 	return(0);
 }

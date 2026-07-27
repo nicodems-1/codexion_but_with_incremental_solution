@@ -15,7 +15,8 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
-
+#include <sys/time.h>
+#include <unistd.h>
 typedef struct s_param
 {
 	int		number_of_coders;
@@ -26,18 +27,23 @@ typedef struct s_param
 	int		number_of_compiles_required;
 	int		dongle_cooldown;
 	char	*scheduler;
+	unsigned long time_since_beginning;
+	unsigned long time_elapsed;
 }			t_param;
 
 typedef struct s_coder
-{
+{	
 	pthread_t coder;
 	pthread_mutex_t coder_lock;
 	int id;
+	t_param *param;
 }	t_coder;
 
 int			match_word(char *word1, char *word2);
 int			ft_is_number(char *number);
 t_param		*parsing(int ac, char **av, t_param *param);
 int			initialization(t_param *param);
+int    time_initialization(t_param *param);
+int current_time(t_param *param);
 
 #endif

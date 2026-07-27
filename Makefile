@@ -1,6 +1,28 @@
-FILES := main.c utils.c simple_parsing.c create_coders.c
-
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+SRCS := main.c utils.c simple_parsing.c create_coders.c
+PTHREAD := -pthread
 INCLUDE_DIRS := -I./include
+OBJS    = $(SRCS:.c=.o)
 
-make: $(FILES)
-	$(CC) $(INCLUDE_DIRS) -o codexion $(FILES)
+
+make: $(OBJS)
+	$(CC) $(INCLUDE_DIRS) $(PTHREAD) -o codexion $(OBJS)
+
+run: make
+	./codexion 6 2 3 4 5 6 7 8 fifo
+
+clean:
+	rm -f *.o
+
+fclean:
+	rm -f codexion *.o
+
+valgrind: make
+	valgrind --leak-check=full ./codexion 1 2 3 4 5 6 7 8 fifo
+
+hellgrind: make
+	valgrind --tool=helgrind ./codexion 1 2 3 4 5 6 7 8 fifo
+
+sanitize: make
+	

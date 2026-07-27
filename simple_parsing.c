@@ -70,12 +70,13 @@ int	basic_parsing(char **av)
 	return (0);
 }
 
-int	parse_flag(char *flag)
+int	parse_flag(char *flag, t_param *param)
 {
-	int	i;
-
 	if ((match_word("fifo", flag) == 0) || match_word("edf", flag) == 0)
+	{
+		param->scheduler = flag;
 		return (0);
+	}
 	return (1);
 }
 
@@ -97,7 +98,7 @@ t_param	*parsing(int ac, char **av, t_param *param)
 			av[index]);
 		exit(1);
 	}
-	else if (parse_flag(av[9]) == 1)
+	else if (parse_flag(av[9], param) == 1)
 	{
 		printf("Arg[9]: \"%s\" not accepted, instead try: \"edf\" or \"fifo\"",
 			av[9]);

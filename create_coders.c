@@ -14,6 +14,8 @@
 
 int	initialization(t_param *param)
 {
-	printf("%d\n", param->dongle_cooldown);
-	return (0);
+	char *something;
+	something = param->scheduler;
+	printf("%s\n", something);
+	return(0);
 }

@@ -12,29 +12,37 @@
 
 #include "include.h"
 
-void *routine()
+int print_logs(char *action, t_coder *coder)
 {
-	printf("Test from coders\n");
+	int total_time = 400;
+	printf("%d  %d  %s\n", total_time, coder->id, action);
+	return (0);
+}
+
+void *routine(void *arguments)
+{
+	print_logs("is testing", arguments);
 	return NULL;
 }
 
 int	initialization(t_param *param)
 {
 	int index;
-	t_coder *coders;
+	t_coder *coder;
 
 	index = 0;
-	coders = malloc(sizeof(t_coder)*(param->number_of_coders));
+	coder = malloc(sizeof(t_coder)*(param->number_of_coders));
 	while(index < (param->number_of_coders - 1))
 	{
-		pthread_create(&coders->coder, NULL, &routine, NULL);
-		pthread_mutex_init(&coders->coder_lock, NULL);
+		pthread_create(&coder->coder, NULL, &routine, coder);
+		pthread_mutex_init(&coder->coder_lock, NULL);
+		coder->id = index;
 		index++;
 	}
 	index = 0;
 	while(index < (param->number_of_coders - 1))
 	{
-		pthread_join(coders->coder, NULL);
+		pthread_join(coder->coder, NULL);
 		index++;
 	}
 	printf("%d\n", index);

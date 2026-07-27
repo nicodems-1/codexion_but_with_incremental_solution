@@ -32,6 +32,7 @@ typedef struct s_coder
 {
 	pthread_t coder;
 	pthread_mutex_t coder_lock;
+	int id;
 }	t_coder;
 
 int			match_word(char *word1, char *word2);

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/27 19:39:56 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/27 22:03:35 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,7 @@ t_param		*parsing(int ac, char **av, t_param *param);
 int			initialization(t_param *param);
 unsigned long current_time();
 int clean_exit();
+int print_logs(char *action, t_coder *coder);
+int debug(t_coder *coder);
+int refactor(t_coder *coder);
 #endif

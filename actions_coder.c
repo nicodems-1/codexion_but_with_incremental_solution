@@ -39,3 +39,17 @@ int	refactor(t_coder *coder)
 	ft_usleep(coder->param->time_to_refactor);
 	return (0);
 }
+
+int get_dongles(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->left_dongle->dongle_lock);
+	print_logs("has taken a dongle", coder);
+	pthread_mutex_lock(&coder->right_dongle->dongle_lock);
+	print_logs("has taken a dongle", coder);
+}
+
+int compilation(t_coder *coder)
+{
+	get_dongles(coder);
+	return(0);
+}

@@ -35,7 +35,9 @@ int	initialization(t_param *param)
 {
 	int		index;
 	t_coder	*coder;
+	t_dongle	*dongle;
 
+	dongle = malloc(sizeof(t_dongle)*(param->number_of_coders));
 	index = 0;
 	coder = malloc(sizeof(t_coder) * (param->number_of_coders));
 	if (pthread_mutex_init(&param->print_lock, NULL) != 0)
@@ -44,6 +46,9 @@ int	initialization(t_param *param)
 		clean_exit();
 	while (index < (param->number_of_coders))
 	{
+		coder[index].left_dongle = &dongle[index];
+		coder[index].right_dongle = &dongle[(index + 1) % param->number_of_coders];
+		pthread_mutex_init(&dongle[index].dongle_lock, NULL);
 		coder[index].param = param;
 		coder[index].id = index + 1;
 		if (pthread_create(&coder[index].coder, NULL, &routine,

@@ -18,6 +18,8 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+typedef struct s_dongle t_dongle;
+
 //parameter + timing
 typedef struct s_param
 {
@@ -40,9 +42,15 @@ typedef struct s_coder
 	pthread_t coder;
 	int id;
 	t_param *param;
+	t_dongle *left_dongle;
+	t_dongle *right_dongle;
 }	t_coder;
 
 //dongles
+typedef struct s_dongle
+{
+	pthread_mutex_t dongle_lock;
+} t_dongle;
 
 int			match_word(char *word1, char *word2);
 int			ft_is_number(char *number);

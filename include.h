@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/27 22:03:35 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:40:45 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,5 @@ int clean_exit();
 int print_logs(char *action, t_coder *coder);
 int debug(t_coder *coder);
 int refactor(t_coder *coder);
+int compilation(t_coder *coder);
 #endif

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/28 01:49:05 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:40:15 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	*routine(void *arguments)
 	t_coder	*coder;
 
 	coder = (t_coder *)arguments;
+	compilation(coder);
 	print_logs("is eating chicken", coder);
 	debug(coder);
 	refactor(coder);

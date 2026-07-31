@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/31 13:50:00 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:52:16 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,10 @@ int	drop_dongles(t_coder *coder)
 
 int	compilation(t_coder *coder)
 {
+	//mutex_lock to protect the data
 	coder->times_compiled += 1;
 	coder->last_compiled = current_time();
+	//mutex_unlock when data is finally modified
 	get_dongles(coder);
 	ft_usleep(500);
 	drop_dongles(coder);

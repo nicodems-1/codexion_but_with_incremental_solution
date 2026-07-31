@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/31 12:50:04 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:42:19 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	initialization(t_param *param)
 	coder = malloc(sizeof(t_coder) * (param->number_of_coders));
 	if (pthread_mutex_init(&param->print_lock, NULL) != 0)
 		clean_exit();
-	if (pthread_mutex_init(&param->coder_lock, NULL) != 0)
+	if (pthread_mutex_init(&coder->coder_mutex, NULL) != 0)
 		clean_exit();
 	while (index < (param->number_of_coders))
 	{

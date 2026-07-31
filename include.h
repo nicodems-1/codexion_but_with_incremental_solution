@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/31 13:28:47 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:41:38 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_dongle	t_dongle;
 
 typedef enum e_status
 {
+	RUNNING,
 	FINISHED,
 	BURNOUT
 } status;

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/31 12:46:53 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:51:16 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	refactor(t_coder *coder)
 	return (0);
 }
 
-int get_dongles(t_coder *coder)
+int	get_dongles(t_coder *coder)
 {
-	if(	coder->id %2 == 0)
+	if (coder->id % 2 == 0)
 	{
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
 		print_logs("has taken a dongle", coder);
@@ -56,17 +56,20 @@ int get_dongles(t_coder *coder)
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
 		print_logs("has taken a dongle", coder);
 	}
-	return(0);
+	return (0);
 }
-int drop_dongles(t_coder *coder)
+
+int	drop_dongles(t_coder *coder)
 {
 	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
 	pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
-	return(0);
+	return (0);
 }
-int compilation(t_coder *coder)
+
+int	compilation(t_coder *coder)
 {
 	get_dongles(coder);
+	ft_usleep(500);
 	drop_dongles(coder);
-	return(0);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/31 12:40:15 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:50:04 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ void	*routine(void *arguments)
 
 int	initialization(t_param *param)
 {
-	int		index;
-	t_coder	*coder;
+	int			index;
+	t_coder		*coder;
 	t_dongle	*dongle;
 
-	dongle = malloc(sizeof(t_dongle)*(param->number_of_coders));
+	dongle = malloc(sizeof(t_dongle) * (param->number_of_coders));
 	index = 0;
 	coder = malloc(sizeof(t_coder) * (param->number_of_coders));
 	if (pthread_mutex_init(&param->print_lock, NULL) != 0)
@@ -48,7 +48,8 @@ int	initialization(t_param *param)
 	while (index < (param->number_of_coders))
 	{
 		coder[index].left_dongle = &dongle[index];
-		coder[index].right_dongle = &dongle[(index + 1) % param->number_of_coders];
+		coder[index].right_dongle = &dongle[(index + 1)
+			% param->number_of_coders];
 		pthread_mutex_init(&dongle[index].dongle_lock, NULL);
 		coder[index].param = param;
 		coder[index].id = index + 1;

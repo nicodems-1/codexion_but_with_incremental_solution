@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug_refacto.c                                    :+:      :+:    :+:   */
+/*   actions_coder.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/28 01:50:10 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:38:00 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int get_dongles(t_coder *coder)
 	print_logs("has taken a dongle", coder);
 	pthread_mutex_lock(&coder->right_dongle->dongle_lock);
 	print_logs("has taken a dongle", coder);
+	return(0);
 }
 
 int compilation(t_coder *coder)

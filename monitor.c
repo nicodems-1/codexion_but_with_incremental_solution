@@ -1,6 +1,6 @@
 #include "include.h"
 
-int monitor(t_coder *coders)
+void monitor(t_coder *coders)
 {
     int time_to_burnout = 450;
     int nb_of_coders = 2;

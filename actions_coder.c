@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/31 13:52:16 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/07/31 14:05:39 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	compilation(t_coder *coder)
 	coder->last_compiled = current_time();
 	//mutex_unlock when data is finally modified
 	get_dongles(coder);
-	ft_usleep(500);
+	ft_usleep(5000);
 	drop_dongles(coder);
 	return (0);
 }

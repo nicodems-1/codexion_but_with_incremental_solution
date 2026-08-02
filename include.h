@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/07/31 13:48:01 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/02 13:43:01 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_coder
 typedef struct s_dongle
 {
 	pthread_mutex_t		dongle_lock;
+	int	released_time;
 }						t_dongle;
 
 

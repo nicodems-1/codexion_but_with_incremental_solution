@@ -1,21 +1,23 @@
 #include "include.h"
 
-void monitor(t_coder *coders)
+void *monitor(void *arguments)
 {
-    int time_to_burnout = 450;
-    int nb_of_coders = 2;
+    t_coder *coders;
+    coders = arguments;
+    int time_to_burnout = coders[0].param->time_to_burnout;
+    int nb_of_coders = coders[0].param->number_of_coders;
     int i = 0;
-    int status;
     while(1)
     {
-        usleep(50);
-        while(i <= nb_of_coders)
+        while(i < nb_of_coders)
         {
             pthread_mutex_lock(&coders[i].coder_mutex);
-            if ((current_time() - coders[i].last_compiled) > time_to_burnout)
-                status = BURNOUT;
+            if ((current_time() - (unsigned long) coders[i].last_compiled) > (unsigned long) time_to_burnout)
+                coders[0].param->status = BURNOUT;
             pthread_mutex_unlock(&coders[i].coder_mutex);
             i++;
         }
+        usleep(50);
     }
+    return(NULL);
 }

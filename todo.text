@@ -1,7 +1,7 @@
 List of stuff i need to do next time:
-->implement dongle cooldown with pcondwait function
-->counting the time a coder has compiled so that the monitor can detect a successfull run 
+->implement dongle cooldown 
 ->detect burnout with the monitor thread
+->counting the time a coder has compiled so that the monitor can detect a successfull run 
 ->having ft_usleep checking for burnout
 ->having each function checking burnout before execution
 ->Implementing fifo

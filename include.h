@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/04 16:00:54 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/04 18:31:12 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef enum e_status
 	RUNNING,
 	FINISHED,
 	BURNOUT
-} status;
+} t_status;
 
 // parameter + timing
 typedef struct s_param
@@ -39,6 +39,8 @@ typedef struct s_param
 	int					dongle_cooldown;
 	char				*scheduler;
 	pthread_mutex_t		print_lock;
+	pthread_mutex_t		status_lock;
+	t_status status;
 }						t_param;
 
 // coders with mutex
@@ -73,4 +75,5 @@ int						print_logs(char *action, t_coder *coder);
 int						debug(t_coder *coder);
 int						refactor(t_coder *coder);
 int						compilation(t_coder *coder);
+void *monitor(void *arguments);
 #endif

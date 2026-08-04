@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRCS := main.c parsing2.c parsing.c create_coders.c time_calculation.c cleanup.c actions_coder.c
+SRCS := main.c parsing2.c parsing.c initialization.c time_calculation.c cleanup.c actions_coder.c monitor.c
 PTHREAD := -pthread
 INCLUDE_DIRS := -I./include
 OBJS    = $(SRCS:.c=.o)
@@ -10,7 +10,7 @@ make: $(OBJS)
 	$(CC) $(INCLUDE_DIRS) $(PTHREAD) -o codexion $(OBJS)
 
 run: make
-	./codexion 10 2 3 400 5 6 7 300 fifo
+	./codexion 4 0 3 400 5 6 7 300 fifo
 
 clean:
 	rm -f *.o

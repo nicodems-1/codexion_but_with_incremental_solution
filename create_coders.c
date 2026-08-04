@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/04 11:18:30 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/04 16:01:33 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	initialization(t_param *param)
 		coder[index].right_dongle = &dongle[(index + 1)
 			% param->number_of_coders];
 		pthread_mutex_init(&dongle[index].dongle_lock, NULL);
+		dongle[index].released_time = 0;
+		dongle[index].init = 0;
 		coder[index].param = param;
 		coder[index].id = index + 1;
 		if (pthread_create(&coder[index].coder, NULL, &routine,

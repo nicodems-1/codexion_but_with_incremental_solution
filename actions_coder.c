@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/04 11:20:13 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/04 16:02:48 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,34 @@ int	refactor(t_coder *coder)
 	ft_usleep(coder->param->time_to_refactor);
 	return (0);
 }
-
+int check_dongle_status(t_dongle *dongle, int dongle_cooldown)
+{
+	int time_elapsed;
+	if (dongle->init++ == 0)
+		return(0);
+	time_elapsed = current_time() - dongle->released_time;
+	if(time_elapsed < dongle_cooldown)
+		ft_usleep(dongle_cooldown - time_elapsed);
+	return(0);
+}
 int	get_dongles(t_coder *coder)
 {
 	if (coder->id % 2 == 0)
 	{
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-			print_logs("has taken a dongle", coder);
+		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown);
+		print_logs("has taken a dongle", coder);
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
+		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown);
 			print_logs("has taken a dongle", coder);
 	}
 	else
 	{
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
+		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown);
 		print_logs("has taken a dongle", coder);
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
+		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown);
 			print_logs("has taken a dongle", coder);
 	}
 	return (0);
@@ -61,6 +74,8 @@ int	get_dongles(t_coder *coder)
 
 int	drop_dongles(t_coder *coder)
 {
+	coder->left_dongle->released_time = current_time();
+	coder->right_dongle->released_time = current_time();
 	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
 	pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/04 19:21:21 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/04 19:53:23 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ void	*routine(void *arguments)
 	t_coder	*coder;
 
 	coder = (t_coder *)arguments;
+	pthread_mutex_lock(&coder->param->lock_race);
+	while(coder->param->unlock_race != 1)
+		pthread_cond_wait(&coder->param->starting_race, &coder->param->lock_race);
+	pthread_mutex_unlock(&coder->param->lock_race);
 	compilation(coder);
 	debug(coder);
 	refactor(coder);
@@ -83,12 +87,16 @@ int	initialization(t_param *param)
 	t_dongle	*dongle;
 	// pthread_t monitor_thread;
 
+	param->unlock_race = 0;
+	pthread_cond_init(&param->starting_race, NULL);
 	dongle = malloc(sizeof(t_dongle) * (param->number_of_coders));
 	coder = malloc(sizeof(t_coder) * (param->number_of_coders));
 
 	init_dongles(param, dongle);
 	init_coders(param, coder, dongle);
 	// pthread_create(&monitor_thread, NULL, &monitor, coder);
+	param->unlock_race = 1;
+	pthread_cond_broadcast(&param->starting_race);
 	index = 0;
 	// pthread_join(monitor_thread, NULL);
 	while (index < (param->number_of_coders))

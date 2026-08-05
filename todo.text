@@ -1,6 +1,6 @@
 List of stuff i need to do next time:
-->implement dongle cooldown 
-->detect burnout with the monitor thread
+->implement dongle cooldown ok
+->detect burnout with the monitor thread ok
 ->counting the time a coder has compiled so that the monitor can detect a successfull run 
 ->having ft_usleep checking for burnout
 ->having each function checking burnout before execution

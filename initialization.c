@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/05 17:54:18 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/06 17:14:02 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	print_logs(char *action, t_coder *coder)
 {
 	pthread_mutex_lock(&coder->param->print_lock);
-	if(coder->param->status != BURNOUT)
+	if (coder->param->status != BURNOUT)
 		printf("%ld %d %s\n", current_time(), coder->id, action);
 	pthread_mutex_unlock(&coder->param->print_lock);
 	return (0);
@@ -24,15 +24,27 @@ int	print_logs(char *action, t_coder *coder)
 void	*routine(void *arguments)
 {
 	t_coder	*coder;
+	int		exited;
 
+	exited = 1;
 	coder = (t_coder *)arguments;
 	pthread_mutex_lock(&coder->param->lock_race);
-	while(coder->param->unlock_race != 1)
-		pthread_cond_wait(&coder->param->starting_race, &coder->param->lock_race);
+	while (coder->param->unlock_race != 1)
+		pthread_cond_wait(&coder->param->starting_race,
+			&coder->param->lock_race);
 	pthread_mutex_unlock(&coder->param->lock_race);
-	compilation(coder);
-	debug(coder);
-	refactor(coder);
+	while (1)
+	{
+		if (coder->param->status == BURNOUT || coder->param->status == FINISHED)
+			exited = 0;
+		pthread_mutex_unlock(&coder->param->update_status);
+		if (exited == 0)
+			clean_exit();
+		compilation(coder);
+		debug(coder);
+		refactor(coder);
+		pthread_mutex_lock(&coder->param->update_status);
+	}
 	return (NULL);
 }
 int	mutex_init(t_param *param)
@@ -41,44 +53,47 @@ int	mutex_init(t_param *param)
 		clean_exit();
 	if (pthread_mutex_init(&param->status_lock, NULL) != 0)
 		clean_exit();
-	return(0);
+	return (0);
 }
 
-
-int init_dongles(t_param *param, t_dongle *dongle)
+int	init_dongles(t_param *param, t_dongle *dongle)
 {
-	int			index;
-	
+	int	index;
+
 	index = 0;
 	while (index < (param->number_of_coders))
 	{
 		if (pthread_mutex_init(&dongle[index].dongle_lock, NULL) != 0)
-		clean_exit();
+			clean_exit();
 		dongle[index].released_time = 0;
 		dongle[index].init = 0;
 		index++;
 	}
-	return(0);
+	return (0);
 }
-int init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
+int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 {
-	int index;
+	int	index;
 
 	index = 0;
+	if (pthread_mutex_init(&param->status_lock, NULL) != 0)
+		clean_exit();
 	while (index < (param->number_of_coders))
 	{
 		coder[index].left_dongle = &dongle[index];
-		coder[index].right_dongle = &dongle[(index + 1)% param->number_of_coders];
+		coder[index].right_dongle = &dongle[(index + 1)
+			% param->number_of_coders];
 		coder[index].param = param;
 		coder[index].id = index + 1;
-		coder[index].param->status = RUNNING; 
+		coder[index].param->status = RUNNING;
 		if (pthread_mutex_init(&coder[index].coder_mutex, NULL) != 0)
 			clean_exit();
-		if (pthread_create(&coder[index].coder, NULL, &routine, &coder[index]) != 0)
+		if (pthread_create(&coder[index].coder, NULL, &routine,
+				&coder[index]) != 0)
 			clean_exit();
 		index++;
 	}
-	return(0);
+	return (0);
 }
 
 int	initialization(t_param *param)
@@ -86,13 +101,12 @@ int	initialization(t_param *param)
 	int			index;
 	t_coder		*coder;
 	t_dongle	*dongle;
-	pthread_t monitor_thread;
+	pthread_t	monitor_thread;
 
 	param->unlock_race = 0;
 	pthread_cond_init(&param->starting_race, NULL);
 	dongle = malloc(sizeof(t_dongle) * (param->number_of_coders));
 	coder = malloc(sizeof(t_coder) * (param->number_of_coders));
-
 	init_dongles(param, dongle);
 	init_coders(param, coder, dongle);
 	pthread_create(&monitor_thread, NULL, &monitor, coder);

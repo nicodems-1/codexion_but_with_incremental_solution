@@ -6,22 +6,29 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/04 18:52:04 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/06 17:11:32 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include.h"
 
-int	ft_usleep(unsigned long time_to_sleep)
+int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 {
 	unsigned long	begin_time;
 	unsigned long	end_time;
+	int exited = 1;
 
 	begin_time = current_time();
 	end_time = begin_time + time_to_sleep;
 	while (current_time() < end_time)
 	{
 		usleep(10);
+		pthread_mutex_lock(&coder->param->update_status);
+        if(coder->param->status == BURNOUT || coder->param->status == FINISHED)
+			exited = 0;
+        pthread_mutex_unlock(&coder->param->update_status);
+		if (exited == 0)
+			clean_exit();
 	}
 	return (0);
 }
@@ -29,7 +36,7 @@ int	ft_usleep(unsigned long time_to_sleep)
 int	debug(t_coder *coder)
 {
 	print_logs("is debugging", coder);
-	ft_usleep(coder->param->time_to_debug);
+	ft_usleep(coder->param->time_to_debug, coder);
 	return (0);
 }
 
@@ -40,17 +47,17 @@ int	refactor(t_coder *coder)
 		print_logs("has burnout", coder);
 	pthread_mutex_unlock(&coder->param->status_lock);
 	print_logs("is refactoring", coder);
-	ft_usleep(coder->param->time_to_refactor);
+	ft_usleep(coder->param->time_to_refactor, coder);
 	return (0);
 }
-int check_dongle_status(t_dongle *dongle, int dongle_cooldown)
+int check_dongle_status(t_dongle *dongle, int dongle_cooldown, t_coder *coder)
 {
 	int time_elapsed;
 	if (dongle->init++ == 0)
 		return(0);
 	time_elapsed = current_time() - dongle->released_time;
 	if(time_elapsed < dongle_cooldown)
-		ft_usleep(dongle_cooldown - time_elapsed);
+		ft_usleep(dongle_cooldown - time_elapsed, coder);
 	return(0);
 }
 int	get_dongles(t_coder *coder)
@@ -58,19 +65,19 @@ int	get_dongles(t_coder *coder)
 	if (coder->id % 2 == 0)
 	{
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown);
+		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown, coder);
 		print_logs("has taken a dongle", coder);
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
-		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown);
+		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown, coder);
 			print_logs("has taken a dongle", coder);
 	}
 	else
 	{
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
-		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown);
+		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown, coder);
 		print_logs("has taken a dongle", coder);
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown);
+		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown, coder);
 			print_logs("has taken a dongle", coder);
 	}
 	return (0);
@@ -94,7 +101,7 @@ int	compilation(t_coder *coder)
 	coder->times_compiled += 1;
 	coder->last_compiled = current_time();
 	pthread_mutex_unlock(&coder->coder_mutex);
-	ft_usleep(coder->param->time_to_compile);
+	ft_usleep(coder->param->time_to_compile, coder);
 	print_logs("is compiling", coder);
 	drop_dongles(coder);
 	return (0);

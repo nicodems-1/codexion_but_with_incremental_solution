@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/05 17:52:36 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/06 16:49:50 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_param
 	t_status status;
 	pthread_cond_t starting_race;
 	pthread_mutex_t lock_race;
+	pthread_mutex_t	update_status;
 	int		unlock_race;
 }						t_param;
 
@@ -73,7 +74,7 @@ int						ft_is_number(char *number);
 t_param					*parsing(int ac, char **av, t_param *param);
 int						initialization(t_param *param);
 unsigned long			current_time(void);
-int						clean_exit(void);
+void						clean_exit(void);
 int						print_logs(char *action, t_coder *coder);
 int						debug(t_coder *coder);
 int						refactor(t_coder *coder);

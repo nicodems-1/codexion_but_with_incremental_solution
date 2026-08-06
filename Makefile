@@ -10,7 +10,7 @@ make: $(OBJS)
 	$(CC) $(INCLUDE_DIRS) $(PTHREAD) -o codexion $(OBJS)
 
 run: make
-	./codexion 4 601 3 400 5 6 7 300 fifo
+	./codexion 4 3000 3 400 5 100 70 2 fifo > tt
 
 clean:
 	rm -f *.o
@@ -22,7 +22,7 @@ valgrind: make
 	valgrind --leak-check=full ./codexion 1 2 3 4 5 6 7 8 fifo
 
 hellgrind: make
-	valgrind --tool=helgrind ./codexion 1 2 3 4 5 6 7 8 fifo
+	valgrind --tool=helgrind ./codexion 4 3000 3 400 5 4 70 2 fifo
 
 sanitize: make
 	

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/10 14:01:06 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/10 16:57:35 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 {
 	unsigned long	begin_time;
 	unsigned long	end_time;
-	int exited = 1;
+	int error = 1;
 
 	begin_time = current_time();
 	end_time = begin_time + time_to_sleep;
@@ -25,10 +25,9 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 		usleep(10);
 		pthread_mutex_lock(&coder->param->update_status);
         if(coder->param->status == BURNOUT || coder->param->status == FINISHED)
-			exited = 0;
+			error = 1;
         pthread_mutex_unlock(&coder->param->update_status);
-		if (exited == 0)
-			clean_exit(coder, coder->param->dongles);
+		return(error);
 	}
 	return (0);
 }
@@ -36,7 +35,8 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 int	debug(t_coder *coder)
 {
 	print_logs("is debugging", coder);
-	ft_usleep(coder->param->time_to_debug, coder);
+	if(ft_usleep(coder->param->time_to_debug, coder) != 0)
+		return(1);
 	return (0);
 }
 
@@ -47,7 +47,8 @@ int	refactor(t_coder *coder)
 		print_logs("has burnout", coder);
 	pthread_mutex_unlock(&coder->param->status_lock);
 	print_logs("is refactoring", coder);
-	ft_usleep(coder->param->time_to_refactor, coder);
+	if (ft_usleep(coder->param->time_to_refactor, coder) != 0)
+		return(1);
 	return (0);
 }
 int check_dongle_status(t_dongle *dongle, int dongle_cooldown, t_coder *coder)
@@ -57,7 +58,8 @@ int check_dongle_status(t_dongle *dongle, int dongle_cooldown, t_coder *coder)
 		return(0);
 	time_elapsed = current_time() - dongle->released_time;
 	if(time_elapsed < dongle_cooldown)
-		ft_usleep(dongle_cooldown - time_elapsed, coder);
+		if(ft_usleep(dongle_cooldown - time_elapsed, coder) != 0)
+			return(1);
 	return(0);
 }
 int	get_dongles(t_coder *coder)

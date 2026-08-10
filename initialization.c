@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/10 16:22:49 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/10 17:02:12 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,19 @@ int	print_logs(char *action, t_coder *coder)
 void	*routine(void *arguments)
 {
 	t_coder	*coder;
-	int		exited;
 
-	exited = 1;
 	coder = (t_coder *)arguments;
 	pthread_mutex_lock(&coder->param->lock_race);
 	while (coder->param->unlock_race != 1)
 		pthread_cond_wait(&coder->param->starting_race,
 			&coder->param->lock_race);
 	pthread_mutex_unlock(&coder->param->lock_race);
+	pthread_mutex_lock(&coder->param->lock_race);
 	while (1)
 	{
-		if (coder->param->status == BURNOUT || coder->param->status == FINISHED)
-			exited = 0;
+		if (coder->param->status != RUNNING)
+			return NULL;
 		pthread_mutex_unlock(&coder->param->update_status);
-		if (exited == 0)
-			clean_exit(coder->param->coders, coder->param->dongles);
 		compilation(coder);
 		debug(coder);
 		refactor(coder);
@@ -66,7 +63,7 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 	while (index < (param->number_of_coders))
 	{
 		if (pthread_mutex_init(&dongle[index].dongle_lock, NULL) != 0)
-			clean_exit(param->coders, param->dongles);
+			return(1);
 		dongle[index].released_time = 0;
 		dongle[index].init = 0;
 		index++;
@@ -79,7 +76,7 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 
 	index = 0;
 	if (pthread_mutex_init(&param->status_lock, NULL) != 0)
-			clean_exit(param->coders, param->dongles);
+			return(1);
 	while (index < (param->number_of_coders))
 	{
 		coder[index].left_dongle = &dongle[index];
@@ -89,10 +86,10 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 		coder[index].id = index + 1;
 		coder[index].param->status = RUNNING;
 		if (pthread_mutex_init(&coder[index].coder_mutex, NULL) != 0)
-			clean_exit(coder->param->coders, coder->param->dongles);
+			return(1);
 		if (pthread_create(&coder[index].coder, NULL, &routine,
 				&coder[index]) != 0)
-			clean_exit(coder->param->coders, coder->param->dongles);
+			return(1);
 		index++;
 	}
 	return (0);

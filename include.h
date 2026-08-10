@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/10 16:36:33 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/10 17:02:51 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ typedef enum e_status
 {
 	RUNNING,
 	FINISHED,
-	BURNOUT
+	BURNOUT, 
+	ERROR
 } t_status;
 
 // parameter + timing
@@ -78,10 +79,11 @@ int						ft_is_number(char *number);
 t_param					*parsing(int ac, char **av, t_param *param);
 int						initialization(t_param *param);
 unsigned long			current_time(void);
-void						clean_exit(t_coder *coder_array, t_dongle *dongle_array, int error_code);
+void						clean_exit(t_coder *coder_array, t_dongle *dongle_array);
 int						print_logs(char *action, t_coder *coder);
 int						debug(t_coder *coder);
 int						refactor(t_coder *coder);
 int						compilation(t_coder *coder);
+void	join_threads(t_coder *coder_array);
 void *monitor(void *arguments);
 #endif

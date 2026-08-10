@@ -6,13 +6,13 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/10 16:36:10 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/10 17:03:06 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include.h"
 
-void	join_threads(t_coder *coder_array, t_dongle *dongle_array)
+void	join_threads(t_coder *coder_array)
 {
 	t_param *param;
 	int	i;
@@ -45,17 +45,16 @@ void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
 }
 void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 {
-		t_param *param;
-	int	i;
+	t_param *param;
 
 	param = coder_array[0].param;
 	free(param);
 	free(coder_array);
 	free(dongle_array);
 }
-void	clean_exit(t_coder *coder_array, t_dongle *dongle_array, int error_code)
+void	clean_exit(t_coder *coder_array, t_dongle *dongle_array)
 {
-	join_threads(coder_array, dongle_array);
+	join_threads(coder_array);
 	destroy_mutexes(coder_array, dongle_array);
 	free_allocation(coder_array, dongle_array);
 	exit(1);

@@ -8,6 +8,7 @@ void *monitor(void *arguments)
     int i;
     int time_to_burnout = coders[0].param->time_to_burnout;
     int nb_of_coders = coders[0].param->number_of_coders;
+
     pthread_mutex_lock(&coders[0].param->lock_race);
     while(coders[0].param->unlock_race != 1)
 		pthread_cond_wait(&coders[0].param->starting_race, &coders[0].param->lock_race);
@@ -29,13 +30,14 @@ void *monitor(void *arguments)
                 pthread_mutex_unlock(&coders[i].coder_mutex);
                 return NULL;
             }
-            if(coders[i].times_compiled >= coders[i].param->number_of_compiles_required)
+            if(coders[i].times_compiled > coders[i].param->number_of_compiles_required)
             {
                 nb_of_finished++;
             }
             if(nb_of_finished == nb_of_coders)
             {
                 pthread_mutex_lock(&coders[0].param->update_status);
+                printf("FINISHED\n");
                 coders[0].param->status = FINISHED;
                 pthread_mutex_unlock(&coders[0].param->update_status);
                 pthread_mutex_unlock(&coders[i].coder_mutex);

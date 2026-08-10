@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/06 16:49:50 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/10 13:59:35 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 
 typedef struct s_dongle	t_dongle;
+typedef struct s_coder	t_coder;
 
 typedef enum e_status
 {
@@ -38,13 +39,15 @@ typedef struct s_param
 	int					number_of_compiles_required;
 	int					dongle_cooldown;
 	char				*scheduler;
+	t_dongle *dongles;
+	t_coder	*coders;
+	t_status status;
+	int		unlock_race;
+	pthread_cond_t starting_race;
 	pthread_mutex_t		print_lock;
 	pthread_mutex_t		status_lock;
-	t_status status;
-	pthread_cond_t starting_race;
 	pthread_mutex_t lock_race;
 	pthread_mutex_t	update_status;
-	int		unlock_race;
 }						t_param;
 
 // coders with mutex
@@ -74,7 +77,7 @@ int						ft_is_number(char *number);
 t_param					*parsing(int ac, char **av, t_param *param);
 int						initialization(t_param *param);
 unsigned long			current_time(void);
-void						clean_exit(void);
+void						clean_exit(t_coder *coder_array, t_dongle *dongle_array);
 int						print_logs(char *action, t_coder *coder);
 int						debug(t_coder *coder);
 int						refactor(t_coder *coder);

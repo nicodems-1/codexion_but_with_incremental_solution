@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/06 17:11:32 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/10 14:01:06 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 			exited = 0;
         pthread_mutex_unlock(&coder->param->update_status);
 		if (exited == 0)
-			clean_exit();
+			clean_exit(coder, coder->param->dongles);
 	}
 	return (0);
 }

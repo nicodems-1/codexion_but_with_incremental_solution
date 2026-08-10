@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/10 15:03:50 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/10 16:22:49 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ void	*routine(void *arguments)
 }
 int	mutex_init(t_param *param)
 {
+	int error;
+	error = 0;
 	if (pthread_mutex_init(&param->print_lock, NULL) != 0)
-		clean_exit(param->coders, param->dongles);
+		error = 1;
 	if (pthread_mutex_init(&param->status_lock, NULL) != 0)
-		clean_exit(param->coders, param->dongles);
-	return (0);
+		error = 1;
+	return (error);
 }
 
 int	init_dongles(t_param *param, t_dongle *dongle)
@@ -98,7 +100,6 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 
 int	initialization(t_param *param)
 {
-	int			index;
 	t_coder		*coder;
 	t_dongle	*dongle;
 	pthread_t	monitor_thread;
@@ -112,14 +113,9 @@ int	initialization(t_param *param)
 	param->dongles = dongle;
 	param->coders  = coder;
 	pthread_create(&monitor_thread, NULL, &monitor, coder);
+	param->monitor_thread = monitor_thread;
 	param->unlock_race = 1;
 	pthread_cond_broadcast(&param->starting_race);
-	index = 0;
-	pthread_join(monitor_thread, NULL);
-	while (index < (param->number_of_coders))
-	{
-		pthread_join(coder[index].coder, NULL);
-		index++;
-	}
+	clean_exit(coder, dongle);
 	return (0);
 }

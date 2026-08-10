@@ -36,3 +36,5 @@ Order of execution in a normal cycle:
 
 ->Implementing fifo
 ->implementing edf
+
+I need to implement my cleaning function so if there is a malloc or pthread_init issue it will clean one time and kill the program;

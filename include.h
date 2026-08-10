@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/10 13:59:35 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/10 16:36:33 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_param
 	t_dongle *dongles;
 	t_coder	*coders;
 	t_status status;
+	pthread_t monitor_thread;
 	int		unlock_race;
 	pthread_cond_t starting_race;
 	pthread_mutex_t		print_lock;
@@ -77,7 +78,7 @@ int						ft_is_number(char *number);
 t_param					*parsing(int ac, char **av, t_param *param);
 int						initialization(t_param *param);
 unsigned long			current_time(void);
-void						clean_exit(t_coder *coder_array, t_dongle *dongle_array);
+void						clean_exit(t_coder *coder_array, t_dongle *dongle_array, int error_code);
 int						print_logs(char *action, t_coder *coder);
 int						debug(t_coder *coder);
 int						refactor(t_coder *coder);

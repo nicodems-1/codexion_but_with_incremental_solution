@@ -10,7 +10,7 @@ make: $(OBJS)
 	$(CC) $(INCLUDE_DIRS) $(PTHREAD) -o codexion $(OBJS)
 
 run: make
-	./codexion 5 1000 30 200 50 20 1 10 fifo 
+	./codexion 5 300 30 20 25 2 1 1 fifo 
 
 clean:
 	rm -f *.o

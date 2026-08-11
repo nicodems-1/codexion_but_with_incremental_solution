@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 12:13:11 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/11 12:37:51 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int	compilation(t_coder *coder)
 	coder->times_compiled += 1;
 	coder->last_compiled = current_time();
 	pthread_mutex_unlock(&coder->coder_mutex);
-	ft_usleep(coder->param->time_to_compile, coder);
 	print_logs("is compiling", coder);
+	ft_usleep(coder->param->time_to_compile, coder);
 	drop_dongles(coder);
 	return (0);
 }

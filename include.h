@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 10:13:08 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/11 14:54:12 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,5 @@ int						refactor(t_coder *coder);
 int						compilation(t_coder *coder);
 void	join_threads(t_coder *coder_array);
 void *monitor(void *arguments);
+void	*ft_calloc(size_t nmemb, size_t size);
 #endif

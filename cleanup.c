@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/10 17:03:06 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/11 08:52:39 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@ void	join_threads(t_coder *coder_array)
 	int	i;
 
 	param = coder_array[0].param;
-	i = -1;
+	i = 0;
 	pthread_join(param->monitor_thread, NULL);
 	while(i++ < param->number_of_coders)
+	{
 		pthread_join(coder_array[i].coder, NULL);
+		i++;
+	}
 }
 
 void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
@@ -54,7 +57,6 @@ void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 }
 void	clean_exit(t_coder *coder_array, t_dongle *dongle_array)
 {
-	join_threads(coder_array);
 	destroy_mutexes(coder_array, dongle_array);
 	free_allocation(coder_array, dongle_array);
 	exit(1);

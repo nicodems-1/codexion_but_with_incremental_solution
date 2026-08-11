@@ -31,9 +31,7 @@ void *monitor(void *arguments)
                 return NULL;
             }
             if(coders[i].times_compiled > coders[i].param->number_of_compiles_required)
-            {
                 nb_of_finished++;
-            }
             if(nb_of_finished == nb_of_coders)
             {
                 pthread_mutex_lock(&coders[0].param->update_status);

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/10 17:02:12 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/11 10:20:45 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	print_logs(char *action, t_coder *coder)
 	pthread_mutex_unlock(&coder->param->print_lock);
 	return (0);
 }
-
 void	*routine(void *arguments)
 {
 	t_coder	*coder;
@@ -31,16 +30,12 @@ void	*routine(void *arguments)
 		pthread_cond_wait(&coder->param->starting_race,
 			&coder->param->lock_race);
 	pthread_mutex_unlock(&coder->param->lock_race);
-	pthread_mutex_lock(&coder->param->lock_race);
 	while (1)
 	{
-		if (coder->param->status != RUNNING)
-			return NULL;
-		pthread_mutex_unlock(&coder->param->update_status);
 		compilation(coder);
 		debug(coder);
 		refactor(coder);
-		pthread_mutex_lock(&coder->param->update_status);
+		return(NULL);
 	}
 	return (NULL);
 }
@@ -113,6 +108,7 @@ int	initialization(t_param *param)
 	param->monitor_thread = monitor_thread;
 	param->unlock_race = 1;
 	pthread_cond_broadcast(&param->starting_race);
-	clean_exit(coder, dongle);
+	join_threads(coder);
+	exit(0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 10:20:45 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/11 12:30:42 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ void	*routine(void *arguments)
 	pthread_mutex_unlock(&coder->param->lock_race);
 	while (1)
 	{
+		if (coder->param->status != RUNNING)
+			return (NULL);
 		compilation(coder);
 		debug(coder);
 		refactor(coder);
-		return(NULL);
 	}
 	return (NULL);
 }
@@ -108,7 +109,7 @@ int	initialization(t_param *param)
 	param->monitor_thread = monitor_thread;
 	param->unlock_race = 1;
 	pthread_cond_broadcast(&param->starting_race);
-	join_threads(coder);
+	clean_exit(coder, dongle);
 	exit(0);
 	return (0);
 }

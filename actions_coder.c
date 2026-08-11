@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 10:14:43 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/11 12:13:11 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 {
 	unsigned long	begin_time;
 	unsigned long	end_time;
-	int error = 1;
 
 	begin_time = current_time();
 	end_time = begin_time + time_to_sleep;
@@ -25,9 +24,11 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 		usleep(10);
 		pthread_mutex_lock(&coder->param->update_status);
         if(coder->param->status == BURNOUT || coder->param->status == FINISHED)
-			error = 1;
+		{
+			pthread_mutex_unlock(&coder->param->update_status);
+			return(1);
+		}
         pthread_mutex_unlock(&coder->param->update_status);
-		return(error);
 	}
 	return (0);
 }
@@ -71,7 +72,7 @@ int	get_dongles(t_coder *coder)
 		print_logs("has taken a dongle", coder);
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
 		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown, coder);
-			print_logs("has taken a dongle", coder);
+		print_logs("has taken a dongle", coder);
 	}
 	else
 	{
@@ -80,7 +81,7 @@ int	get_dongles(t_coder *coder)
 		print_logs("has taken a dongle", coder);
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
 		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown, coder);
-			print_logs("has taken a dongle", coder);
+		print_logs("has taken a dongle", coder);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 08:52:39 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/11 12:14:32 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 }
 void	clean_exit(t_coder *coder_array, t_dongle *dongle_array)
 {
+	join_threads(coder_array);
 	destroy_mutexes(coder_array, dongle_array);
 	free_allocation(coder_array, dongle_array);
 	exit(1);

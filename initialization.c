@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 15:27:50 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/11 16:32:15 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 {
 	int	index;
+	int error;
 
+	error = 0;
 	index = 0;
 	if (pthread_mutex_init(&param->status_lock, NULL) != 0)
 			return(1);
@@ -86,13 +88,13 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 		coder[index].param = param;
 		coder[index].id = index + 1;
 		if (pthread_mutex_init(&coder[index].coder_mutex, NULL) != 0)
-			return(1);
+			error = 1;
 		if (pthread_create(&coder[index].coder, NULL, &routine,
 				&coder[index]) != 0)
-			return(1);
+			error = 1;
 		index++;
 	}
-	return (0);
+	return (error);
 }
 
 int	initialization(t_param *param)

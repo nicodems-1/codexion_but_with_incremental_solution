@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 15:22:02 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/14 15:24:01 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,12 @@ int	update_struct(char **parsed, t_param *param)
 		i++;
 	}
 	param->number_of_coders = converted[0];
-	printf("nb of coders == %d\n", param->number_of_coders);
 	param->time_to_burnout = converted[1];
-	printf("time to burnout == %d\n", param->time_to_burnout);
 	param->time_to_compile = converted[2];
-	printf("time to compile == %d\n", param->time_to_compile);
 	param->time_to_debug = converted[3];
-	printf("time to debug == %d\n", param->time_to_debug);
 	param->time_to_refactor = converted[4];
-	printf("time to refactor == %d\n", param->time_to_refactor);
 	param->number_of_compiles_required = converted[5];
-	printf("number of compiles == %d\n", param->number_of_compiles_required);
 	param->dongle_cooldown = converted[6];
-	printf("dongle cooldown == %d\n", param->dongle_cooldown);
 	return (0);
 }
 

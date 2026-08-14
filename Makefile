@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g3 -Wall -Wextra -Werror
 SRCS := main.c parsing2.c parsing.c initialization.c time_calculation.c cleanup.c actions_coder.c monitor.c helpers.c
 PTHREAD := -pthread
 INCLUDE_DIRS := -I./include
@@ -7,10 +7,10 @@ OBJS    = $(SRCS:.c=.o)
 
 
 make: $(OBJS)
-	$(CC) $(INCLUDE_DIRS) $(PTHREAD) -o codexion $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) $(PTHREAD) -o codexion $(OBJS)
 
 run: make
-	./codexion 2 10 1 2 2 1 1 1 fifo 
+	./codexion 2 10 1 2 2 1 1 fifo 
 
 clean:
 	rm -f *.o
@@ -19,10 +19,10 @@ fclean:
 	rm -f codexion *.o
 
 valgrind: make
-	valgrind  --leak-check=full --track-origins=yes  ./codexion 2 10 1 2 2 1 1 1 fifo 
+	valgrind  --leak-check=full --track-origins=yes  ./codexion 2 1000 100 200 200 100 10 fifo 
 
 hellgrind: make
-	valgrind --tool=helgrind 	./codexion 2 10 1 2 2 1 1 1 fifo 
+	valgrind --tool=helgrind 	./codexion 2 10 1 2 2 1 1 fifo 
 
 sanitize: make
 	

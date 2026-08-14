@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 16:26:53 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/14 13:34:06 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	join_threads(t_coder *coder_array)
 {
-	t_param *param;
-	int	i;
+	t_param	*param;
+	int		i;
 
 	param = coder_array[0].param;
 	i = 0;
 	pthread_join(param->monitor_thread, NULL);
-	while(i < param->number_of_coders)
+	while (i < param->number_of_coders)
 	{
 		pthread_join(coder_array[i].coder, NULL);
 		i++;
@@ -29,8 +29,8 @@ void	join_threads(t_coder *coder_array)
 
 void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
 {
-	t_param *param;
-	int	i;
+	t_param	*param;
+	int		i;
 
 	param = coder_array[0].param;
 	pthread_mutex_destroy(&param->update_status);
@@ -38,9 +38,8 @@ void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
 	pthread_mutex_destroy(&param->lock_race);
 	pthread_cond_destroy(&param->starting_race);
 	pthread_mutex_destroy(&param->print_lock);
-
 	i = 0;
-	while(i < param->number_of_coders)
+	while (i < param->number_of_coders)
 	{
 		pthread_mutex_destroy(&coder_array[i].coder_mutex);
 		pthread_mutex_destroy(&dongle_array[i].dongle_lock);
@@ -49,7 +48,7 @@ void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
 }
 void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 {
-	t_param *param;
+	t_param	*param;
 
 	param = coder_array[0].param;
 	free(param);

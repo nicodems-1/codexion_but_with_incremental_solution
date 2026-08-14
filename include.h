@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 14:54:12 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/14 14:25:59 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_dongle
 
 int						match_word(char *word1, char *word2);
 int						ft_is_number(char *number);
-t_param					*parsing(int ac, char **av, t_param *param);
+int					parsing(int ac, char **av, t_param *param);
 int						initialization(t_param *param);
 unsigned long			current_time(void);
 void						clean_exit(t_coder *coder_array, t_dongle *dongle_array);

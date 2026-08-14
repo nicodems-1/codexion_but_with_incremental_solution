@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 13:03:36 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/11 12:16:52 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/14 14:29:24 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,16 @@ int	main(int ac, char **av)
 	t_param	*param;
 
 	param = malloc(sizeof(t_param));
-	param = parsing(ac, av, param);
-	initialization(param);
+	if (!param)
+	{
+		free(param);
+		return (1);
+	}
+	if (parsing(ac, av, param) == 1)
+	{
+		free(param);
+		return(1);
+	}
 	free(param);
+	// initialization(param);
 }

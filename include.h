@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 14:25:59 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/14 15:17:06 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+#include <string.h>
 
 typedef struct s_dongle	t_dongle;
 typedef struct s_coder	t_coder;

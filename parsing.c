@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 14:25:41 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/14 15:22:02 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	update_struct(char **parsed, t_param *param)
 	while (i < 9)
 	{
 		converted[i - 1] = atoi(parsed[i]);
-		if (converted[i - 1] < 0)
+		if (converted[i - 1] < 0 || ((strcmp(parsed[i], "2147483647") > 0) && strlen(parsed[i]) == 10))
 			return (i);
 		i++;
 	}
@@ -63,12 +63,12 @@ int	basic_parsing(char **av)
 	{
 		if (valid_length(av[i]) == 1)
 		{
-			printf("Arg[%d]: \"%s\" length is too long", i, av[i]);
+			printf("Arg[%d]: \"%s\" length is too long\n", i, av[i]);
 			return (1);
 		}
 		if (ft_is_number(av[i]) == 1)
 		{
-			printf("Arg[%d]: \"%s\" is not a number", i, av[i]);
+			printf("Arg[%d]: \"%s\" is not a number\n", i, av[i]);
 			return (1);
 		}
 		i++;
@@ -100,13 +100,13 @@ int	parsing(int ac, char **av, t_param *param)
 	else if ((update_struct(av, param)) != 0)
 	{
 		index = update_struct(av, param);
-		printf("Error, arg[%d]: \"%s\" is bigger than int max", index,
+		printf("Error, arg[%d]: \"%s\" is bigger than int max\n", index,
 			av[index]);
 		return (1);
 	}
 	else if (parse_flag(av[8], param) == 1)
 	{
-		printf("Arg[8]: \"%s\" not accepted, instead try: \"edf\" or \"fifo\"",
+		printf("Arg[8]: \"%s\" not accepted, instead try: \"edf\" or \"fifo\"\n",
 			av[8]);
 		return (1);
 	}

@@ -2,8 +2,8 @@
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	unsigned char	*ptr;
-	size_t			i;
+	unsigned char *ptr;
+	size_t i;
 
 	i = 0;
 	ptr = malloc(nmemb * size);

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 13:03:36 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 15:38:59 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 22:39:11 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int ac, char **av)
 	if (parsing(ac, av, param) == 1)
 	{
 		free(param);
-		return(1);
+		return (1);
 	}
 	initialization(param);
 	free(param);

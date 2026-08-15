@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 15:27:42 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 22:39:48 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	update_struct(char **parsed, t_param *param)
 	while (i < 9)
 	{
 		converted[i - 1] = atoi(parsed[i]);
-		if (converted[i - 1] < 0 || ((strcmp(parsed[i], "2147483647") > 0) && strlen(parsed[i]) == 10))
+		if (converted[i - 1] < 0 || ((strcmp(parsed[i], "2147483647") > 0)
+				&& strlen(parsed[i]) == 10))
 			return (i);
 		i++;
 	}
@@ -81,7 +82,7 @@ int	parse_flag(char *flag, t_param *param)
 
 int	parsing(int ac, char **av, t_param *param)
 {
-	int		index;
+	int	index;
 
 	if (ac != 9)
 	{
@@ -99,7 +100,7 @@ int	parsing(int ac, char **av, t_param *param)
 	}
 	else if (parse_flag(av[8], param) == 1)
 	{
-		printf("Arg[8]: \"%s\" not accepted, instead try: \"edf\" or \"fifo\"\n",
+		printf("Arg[8]: \"%s\" not accepted,instead try: \"edf\" or \"fifo\"\n",
 			av[8]);
 		return (1);
 	}

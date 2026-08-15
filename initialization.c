@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 22:37:32 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 22:39:09 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	*routine(void *arguments)
 }
 int	mutex_init(t_param *param)
 {
-	int error;
+	int	error;
+
 	error = 0;
 	if (pthread_mutex_init(&param->print_lock, NULL) != 0)
 		error = 1;
@@ -63,7 +64,7 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 	while (index < (param->number_of_coders))
 	{
 		if (pthread_mutex_init(&dongle[index].dongle_lock, NULL) != 0)
-			return(1);
+			return (1);
 		dongle[index].released_time = 0;
 		dongle[index].init = 0;
 		index++;
@@ -73,12 +74,12 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 {
 	int	index;
-	int error;
+	int	error;
 
 	error = 0;
 	index = 0;
 	if (pthread_mutex_init(&param->status_lock, NULL) != 0)
-			return(1);
+		return (1);
 	param->status = RUNNING;
 	while (index < (param->number_of_coders))
 	{
@@ -97,38 +98,27 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 	return (error);
 }
 
-int initialization(t_param *param)
+int	initialization(t_param *param)
 {
-    t_coder     *coder;
-    t_dongle    *dongle;
-    pthread_t   monitor_thread;
+	t_coder		*coder;
+	t_dongle	*dongle;
+	pthread_t	monitor_thread;
 
-    param->unlock_race = 0; 
-    pthread_cond_init(&param->starting_race, NULL);
-    pthread_mutex_init(&param->time_mutex, NULL);
-
-    dongle = ft_calloc(param->number_of_coders, sizeof(t_dongle));
-    coder = ft_calloc(param->number_of_coders, sizeof(t_coder));
-    
-
-    init_dongles(param, dongle);
-    init_coders(param, coder, dongle);
-    
-    param->dongles = dongle;
-    param->coders  = coder;
-    
-
-    pthread_create(&monitor_thread, NULL, &monitor, coder);
-    param->monitor_thread = monitor_thread;
-
-    pthread_mutex_lock(&param->lock_race);
-    
-    param->unlock_race = 1; 
-    pthread_cond_broadcast(&param->starting_race); 
-    
-    pthread_mutex_unlock(&param->lock_race);
-
-    clean_exit(coder, dongle);
-    
-    return (0);
+	param->unlock_race = 0;
+	pthread_cond_init(&param->starting_race, NULL);
+	pthread_mutex_init(&param->time_mutex, NULL);
+	dongle = ft_calloc(param->number_of_coders, sizeof(t_dongle));
+	coder = ft_calloc(param->number_of_coders, sizeof(t_coder));
+	init_dongles(param, dongle);
+	init_coders(param, coder, dongle);
+	param->dongles = dongle;
+	param->coders = coder;
+	pthread_create(&monitor_thread, NULL, &monitor, coder);
+	param->monitor_thread = monitor_thread;
+	pthread_mutex_lock(&param->lock_race);
+	param->unlock_race = 1;
+	pthread_cond_broadcast(&param->starting_race);
+	pthread_mutex_unlock(&param->lock_race);
+	clean_exit(coder, dongle);
+	return (0);
 }

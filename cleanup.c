@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 13:34:06 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/14 16:49:45 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 	t_param	*param;
 
 	param = coder_array[0].param;
-	free(param);
 	free(coder_array);
 	free(dongle_array);
 }

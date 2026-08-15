@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 12:29:48 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 22:34:21 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 	unsigned long	begin_time;
 	unsigned long	end_time;
 
-	begin_time = current_time();
+	begin_time = current_time(coder->param);
 	end_time = begin_time + time_to_sleep;
-	while (current_time() < end_time)
+	while (current_time(coder->param) < end_time)
 	{
 		usleep(10);
 		pthread_mutex_lock(&coder->param->update_status);
@@ -57,7 +57,7 @@ int check_dongle_status(t_dongle *dongle, int dongle_cooldown, t_coder *coder)
 	int time_elapsed;
 	if (dongle->init++ == 0)
 		return(0);
-	time_elapsed = current_time() - dongle->released_time;
+	time_elapsed = current_time(coder->param) - dongle->released_time;
 	if(time_elapsed < dongle_cooldown)
 		if(ft_usleep(dongle_cooldown - time_elapsed, coder) != 0)
 			return(1);
@@ -88,8 +88,8 @@ int	get_dongles(t_coder *coder)
 
 int	drop_dongles(t_coder *coder)
 {
-	coder->left_dongle->released_time = current_time();
-	coder->right_dongle->released_time = current_time();
+	coder->left_dongle->released_time = current_time(coder->param);
+	coder->right_dongle->released_time = current_time(coder->param);
 	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
 	pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
 	return (0);
@@ -100,7 +100,7 @@ int	compilation(t_coder *coder)
 	get_dongles(coder);
 	pthread_mutex_lock(&coder->coder_mutex);
 	coder->times_compiled += 1;
-	coder->last_compiled = current_time();
+	coder->last_compiled = current_time(coder->param);
 	pthread_mutex_unlock(&coder->coder_mutex);
 	print_logs("is compiling", coder);
 	ft_usleep(coder->param->time_to_compile, coder);

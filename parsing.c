@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 15:24:01 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/14 15:27:42 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,5 @@ int	parsing(int ac, char **av, t_param *param)
 			av[8]);
 		return (1);
 	}
-	printf("flag == %s\n", param->scheduler);
 	return (0);
 }

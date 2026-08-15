@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 15:17:06 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 22:33:35 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_param
 	int					number_of_compiles_required;
 	int					dongle_cooldown;
 	char				*scheduler;
+	unsigned long		time_initialized;
 	t_dongle *dongles;
 	t_coder	*coders;
 	t_status status;
@@ -51,6 +52,7 @@ typedef struct s_param
 	pthread_mutex_t		status_lock;
 	pthread_mutex_t lock_race;
 	pthread_mutex_t	update_status;
+	pthread_mutex_t time_mutex;
 }						t_param;
 
 // coders with mutex
@@ -79,7 +81,7 @@ int						match_word(char *word1, char *word2);
 int						ft_is_number(char *number);
 int					parsing(int ac, char **av, t_param *param);
 int						initialization(t_param *param);
-unsigned long			current_time(void);
+unsigned long			current_time(t_param *param);
 void						clean_exit(t_coder *coder_array, t_dongle *dongle_array);
 int						print_logs(char *action, t_coder *coder);
 int						debug(t_coder *coder);

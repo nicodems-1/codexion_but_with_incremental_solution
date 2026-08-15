@@ -21,11 +21,13 @@ void *monitor(void *arguments)
         while(i < nb_of_coders)
         {
             pthread_mutex_lock(&coders[i].coder_mutex);
-            if ((current_time() - (unsigned long) coders[i].last_compiled) > (unsigned long) time_to_burnout)
+            if ((current_time(coders[0].param) - (unsigned long) coders[i].last_compiled) > (unsigned long) time_to_burnout)
             {
-                print_logs("has burnout", &coders[i]);
+                pthread_mutex_lock(&coders->param->print_lock);
                 pthread_mutex_lock(&coders[0].param->update_status);
                 coders[0].param->status = BURNOUT;
+                printf("coder %d has burnout", i);
+                pthread_mutex_unlock(&coders->param->print_lock);
                 pthread_mutex_unlock(&coders[0].param->update_status);
                 pthread_mutex_unlock(&coders[i].coder_mutex);
                 return NULL;
@@ -34,11 +36,13 @@ void *monitor(void *arguments)
                 nb_of_finished++;
             if(nb_of_finished == nb_of_coders)
             {
+                pthread_mutex_lock(&coders[0].param->print_lock);
                 pthread_mutex_lock(&coders[0].param->update_status);
-                printf("FINISHED\n");
                 coders[0].param->status = FINISHED;
+                printf("FINISHED\n");
                 pthread_mutex_unlock(&coders[0].param->update_status);
                 pthread_mutex_unlock(&coders[i].coder_mutex);
+                pthread_mutex_unlock(&coders->param->print_lock);
                 return NULL;
             }
             pthread_mutex_unlock(&coders[i].coder_mutex);

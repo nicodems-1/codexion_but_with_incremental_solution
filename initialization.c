@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/14 14:39:02 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 22:37:32 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	print_logs(char *action, t_coder *coder)
 {
 	pthread_mutex_lock(&coder->param->print_lock);
 	if (coder->param->status != BURNOUT)
-		printf("%ld %d %s\n", current_time(), coder->id, action);
+		printf("%ld %d %s\n", current_time(coder->param), coder->id, action);
 	pthread_mutex_unlock(&coder->param->print_lock);
 	return (0);
 }
@@ -97,25 +97,38 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 	return (error);
 }
 
-int	initialization(t_param *param)
+int initialization(t_param *param)
 {
-	t_coder		*coder;
-	t_dongle	*dongle;
-	pthread_t	monitor_thread;
+    t_coder     *coder;
+    t_dongle    *dongle;
+    pthread_t   monitor_thread;
 
-	param->unlock_race = 0;
-	pthread_cond_init(&param->starting_race, NULL);
-	dongle = ft_calloc( (param->number_of_coders), sizeof(t_dongle));
-	coder = ft_calloc((param->number_of_coders), sizeof(t_coder));
-	init_dongles(param, dongle);
-	init_coders(param, coder, dongle);
-	param->dongles = dongle;
-	param->coders  = coder;
-	pthread_create(&monitor_thread, NULL, &monitor, coder);
-	param->monitor_thread = monitor_thread;
-	param->unlock_race = 1;
-	pthread_cond_broadcast(&param->starting_race);
-	clean_exit(coder, dongle);
-	exit(0);
-	return (0);
+    param->unlock_race = 0; 
+    pthread_cond_init(&param->starting_race, NULL);
+    pthread_mutex_init(&param->time_mutex, NULL);
+
+    dongle = ft_calloc(param->number_of_coders, sizeof(t_dongle));
+    coder = ft_calloc(param->number_of_coders, sizeof(t_coder));
+    
+
+    init_dongles(param, dongle);
+    init_coders(param, coder, dongle);
+    
+    param->dongles = dongle;
+    param->coders  = coder;
+    
+
+    pthread_create(&monitor_thread, NULL, &monitor, coder);
+    param->monitor_thread = monitor_thread;
+
+    pthread_mutex_lock(&param->lock_race);
+    
+    param->unlock_race = 1; 
+    pthread_cond_broadcast(&param->starting_race); 
+    
+    pthread_mutex_unlock(&param->lock_race);
+
+    clean_exit(coder, dongle);
+    
+    return (0);
 }

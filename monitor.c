@@ -29,7 +29,7 @@ void	*monitor(void *arguments)
 				pthread_mutex_lock(&coders->param->print_lock);
 				pthread_mutex_lock(&coders[0].param->update_status);
 				coders[0].param->status = BURNOUT;
-				printf("coder %d has burnout", i);
+				printf("%lu %d has burnout",current_time(coders[0].param), i);
 				pthread_mutex_unlock(&coders->param->print_lock);
 				pthread_mutex_unlock(&coders[0].param->update_status);
 				pthread_mutex_unlock(&coders[i].coder_mutex);

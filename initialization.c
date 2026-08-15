@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 22:39:09 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/16 01:30:12 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,30 @@
 
 int	print_logs(char *action, t_coder *coder)
 {
-	pthread_mutex_lock(&coder->param->print_lock);
-	if (coder->param->status != BURNOUT)
+	pthread_mutex_lock(&coder->param->update_status);
+	if (coder->param->status == RUNNING)
+	{
+		pthread_mutex_unlock(&coder->param->update_status);
+		pthread_mutex_lock(&coder->param->print_lock);
 		printf("%ld %d %s\n", current_time(coder->param), coder->id, action);
-	pthread_mutex_unlock(&coder->param->print_lock);
+		pthread_mutex_unlock(&coder->param->print_lock);
+	}
+	else
+		pthread_mutex_unlock(&coder->param->update_status);
 	return (0);
+}
+
+int	check_status(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->param->update_status);
+	if (coder->param->status != RUNNING)
+	{
+		pthread_mutex_unlock(&coder->param->update_status);
+		return (1);
+	}
+	else
+		pthread_mutex_unlock(&coder->param->update_status);
+	return(0);
 }
 void	*routine(void *arguments)
 {
@@ -32,14 +51,14 @@ void	*routine(void *arguments)
 	pthread_mutex_unlock(&coder->param->lock_race);
 	while (1)
 	{
-		if (coder->param->status != RUNNING)
-			return (NULL);
+		if (check_status(coder) != 0)
+			return(NULL);
 		compilation(coder);
-		if (coder->param->status != RUNNING)
-			return (NULL);
+		if (check_status(coder) != 0)
+			return(NULL);
 		debug(coder);
-		if (coder->param->status != RUNNING)
-			return (NULL);
+		if (check_status(coder) != 0)
+			return(NULL);
 		refactor(coder);
 	}
 	return (NULL);
@@ -51,7 +70,7 @@ int	mutex_init(t_param *param)
 	error = 0;
 	if (pthread_mutex_init(&param->print_lock, NULL) != 0)
 		error = 1;
-	if (pthread_mutex_init(&param->status_lock, NULL) != 0)
+	if(	pthread_mutex_init(&param->time_mutex, NULL))
 		error = 1;
 	return (error);
 }
@@ -78,8 +97,6 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 
 	error = 0;
 	index = 0;
-	if (pthread_mutex_init(&param->status_lock, NULL) != 0)
-		return (1);
 	param->status = RUNNING;
 	while (index < (param->number_of_coders))
 	{
@@ -106,7 +123,6 @@ int	initialization(t_param *param)
 
 	param->unlock_race = 0;
 	pthread_cond_init(&param->starting_race, NULL);
-	pthread_mutex_init(&param->time_mutex, NULL);
 	dongle = ft_calloc(param->number_of_coders, sizeof(t_dongle));
 	coder = ft_calloc(param->number_of_coders, sizeof(t_coder));
 	init_dongles(param, dongle);

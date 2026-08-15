@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 22:39:05 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 23:42:33 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
 
 	param = coder_array[0].param;
 	pthread_mutex_destroy(&param->update_status);
-	pthread_mutex_destroy(&param->status_lock);
 	pthread_mutex_destroy(&param->lock_race);
 	pthread_cond_destroy(&param->starting_race);
 	pthread_mutex_destroy(&param->print_lock);
+	pthread_mutex_destroy(&param->time_mutex);
 	i = 0;
 	while (i < param->number_of_coders)
 	{

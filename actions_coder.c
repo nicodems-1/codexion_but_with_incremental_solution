@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 22:45:41 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 23:42:26 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	debug(t_coder *coder)
 
 int	refactor(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->param->status_lock);
+	pthread_mutex_lock(&coder->param->update_status);
 	if (coder->param->status == BURNOUT)
 		print_logs("has burnout", coder);
-	pthread_mutex_unlock(&coder->param->status_lock);
+	pthread_mutex_unlock(&coder->param->update_status);
 	print_logs("is refactoring", coder);
 	if (ft_usleep(coder->param->time_to_refactor, coder) != 0)
 		return (1);

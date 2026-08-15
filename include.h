@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 22:39:07 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 23:44:28 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_param
 	int					unlock_race;
 	pthread_cond_t		starting_race;
 	pthread_mutex_t		print_lock;
-	pthread_mutex_t		status_lock;
 	pthread_mutex_t		lock_race;
 	pthread_mutex_t		update_status;
 	pthread_mutex_t		time_mutex;

@@ -51,7 +51,7 @@ void	*monitor(void *arguments)
 			pthread_mutex_unlock(&coders[i].coder_mutex);
 			i++;
 		}
-		usleep(5);
+		usleep(100);
 	}
 	return (NULL);
 }

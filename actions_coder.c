@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 22:39:01 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/15 22:45:41 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 	end_time = begin_time + time_to_sleep;
 	while (current_time(coder->param) < end_time)
 	{
-		usleep(10);
+		usleep(100);
 		pthread_mutex_lock(&coder->param->update_status);
 		if (coder->param->status == BURNOUT || coder->param->status == FINISHED)
 		{

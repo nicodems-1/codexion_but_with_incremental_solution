@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 22:39:48 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/16 03:02:23 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	update_struct(char **parsed, t_param *param)
 	param->time_to_compile = converted[2];
 	param->time_to_debug = converted[3];
 	param->time_to_refactor = converted[4];
-	param->number_of_compiles_required = converted[5];
+	param->nb_compiles = converted[5];
 	param->dongle_cooldown = converted[6];
 	return (0);
 }

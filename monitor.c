@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/16 03:04:29 by niverdie          #+#    #+#             */
+/*   Updated: 2026/08/16 03:50:13 by niverdie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "include.h"
 
 void	*burnout(t_coder *coders, int coder_id)
@@ -37,9 +49,10 @@ void	*lauch_monitor(t_coder *coders)
 		{
 			pthread_mutex_lock(&coders[i].coder_mutex);
 			if ((current_time(coders[0].param)
-					- (unsigned long)coders[i].last_compiled) > (unsigned long)coders[0].param->time_to_burnout)
+					- coders[i].last_compiled)
+				> (unsigned long)coders[0].param->time_to_burnout)
 				return (burnout(coders, i));
-			if (coders[i].times_compiled > coders[i].param->number_of_compiles_required)
+			if (coders[i].times_compiled > coders[i].param->nb_compiles)
 				nb_of_finished++;
 			if (nb_of_finished == coders[0].param->number_of_coders)
 				return (finished(coders, i));
@@ -49,6 +62,7 @@ void	*lauch_monitor(t_coder *coders)
 		usleep(100);
 	}
 }
+
 void	*monitor(void *arguments)
 {
 	t_coder	*coders;

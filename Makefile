@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -g3 -Wall -Wextra -Werror
-SRCS := main.c parsing2.c parsing.c initialization.c time_calculation.c cleanup.c actions_coder.c monitor.c helpers.c
+SRCS := main.c parsing2.c parsing.c initialization.c time_calculation.c cleanup.c actions_coder.c monitor.c
 PTHREAD := -pthread
 INCLUDE_DIRS := -I./include
 OBJS    = $(SRCS:.c=.o)

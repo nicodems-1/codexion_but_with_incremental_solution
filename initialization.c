@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/16 01:30:12 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/16 03:52:57 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ int	initialization(t_param *param)
 
 	param->unlock_race = 0;
 	pthread_cond_init(&param->starting_race, NULL);
-	dongle = ft_calloc(param->number_of_coders, sizeof(t_dongle));
-	coder = ft_calloc(param->number_of_coders, sizeof(t_coder));
+	dongle = malloc(param->number_of_coders * sizeof(t_dongle));
+	coder = malloc(param->number_of_coders * sizeof(t_coder));
 	init_dongles(param, dongle);
 	init_coders(param, coder, dongle);
 	param->dongles = dongle;

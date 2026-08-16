@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 23:42:33 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/16 03:51:17 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
 		i++;
 	}
 }
+
 void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 {
 	t_param	*param;
@@ -54,6 +55,7 @@ void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 	free(coder_array);
 	free(dongle_array);
 }
+
 void	clean_exit(t_coder *coder_array, t_dongle *dongle_array)
 {
 	join_threads(coder_array);

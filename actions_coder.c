@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/15 23:42:26 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/18 17:19:00 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ int	check_dongle_status(t_dongle *dongle, int dongle_cooldown, t_coder *coder)
 
 	if (dongle->init++ == 0)
 		return (0);
+	while(1)
+	{
+		if (dongle->id_holding_dongle == 0)
+			break;
+	}
 	time_elapsed = current_time(coder->param) - dongle->released_time;
 	if (time_elapsed < dongle_cooldown)
 		if (ft_usleep(dongle_cooldown - time_elapsed, coder) != 0)
@@ -71,10 +76,12 @@ int	get_dongles(t_coder *coder)
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
 		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown,
 			coder);
+		coder->left_dongle->id_holding_dongle = coder->id;
 		print_logs("has taken a dongle", coder);
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
 		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown,
 			coder);
+		coder->right_dongle->id_holding_dongle = coder->id;
 		print_logs("has taken a dongle", coder);
 	}
 	else
@@ -82,10 +89,12 @@ int	get_dongles(t_coder *coder)
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
 		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown,
 			coder);
+		coder->right_dongle->id_holding_dongle = coder->id;
 		print_logs("has taken a dongle", coder);
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
 		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown,
 			coder);
+		coder->left_dongle->id_holding_dongle = coder->id;
 		print_logs("has taken a dongle", coder);
 	}
 	return (0);
@@ -93,6 +102,8 @@ int	get_dongles(t_coder *coder)
 
 int	drop_dongles(t_coder *coder)
 {
+	coder->left_dongle->id_holding_dongle = 0;
+	coder->right_dongle->id_holding_dongle = 0;
 	coder->left_dongle->released_time = current_time(coder->param);
 	coder->right_dongle->released_time = current_time(coder->param);
 	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/19 20:55:02 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/20 00:47:25 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 
 int	print_logs(char *action, t_coder *coder)
 {
+	pthread_mutex_lock(&coder->param->print_lock);
 	pthread_mutex_lock(&coder->param->update_status);
 	if (coder->param->status == RUNNING)
 	{
-		pthread_mutex_unlock(&coder->param->update_status);
-		pthread_mutex_lock(&coder->param->print_lock);
 		printf("%ld %d %s\n", current_time(coder->param), coder->id, action);
+		pthread_mutex_unlock(&coder->param->update_status);
 		pthread_mutex_unlock(&coder->param->print_lock);
 	}
 	else
+	{
 		pthread_mutex_unlock(&coder->param->update_status);
+		pthread_mutex_unlock(&coder->param->print_lock);
+	}
 	return (0);
 }
 

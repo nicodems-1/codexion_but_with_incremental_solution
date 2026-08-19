@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/19 15:24:24 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/20 01:16:11 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_param
 	int					time_to_debug;
 	int					time_to_refactor;
 	int					nb_compiles;
-	int					dongle_cooldown;
+	unsigned long		dongle_cooldown;
 	char				*scheduler;
 	unsigned long		time_initialized;
 	t_dongle			*dongles;

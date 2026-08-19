@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/19 15:32:30 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/19 20:53:22 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,6 @@ int	print_logs(char *action, t_coder *coder)
 	return (0);
 }
 
-int	check_status(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->param->update_status);
-	if (coder->param->status != RUNNING)
-	{
-		pthread_mutex_unlock(&coder->param->update_status);
-		return (1);
-	}
-	else
-		pthread_mutex_unlock(&coder->param->update_status);
-	return(0);
-}
 void	*routine(void *arguments)
 {
 	t_coder	*coder;
@@ -51,15 +39,12 @@ void	*routine(void *arguments)
 	pthread_mutex_unlock(&coder->param->lock_race);
 	while (1)
 	{
-		if (check_status(coder) != 0)
+		if (compilation(coder) != 0)
+			return (NULL);
+		if (debug(coder) != 0)
 			return(NULL);
-		compilation(coder);
-		if (check_status(coder) != 0)
+		if(refactor(coder) != 0)
 			return(NULL);
-		debug(coder);
-		if (check_status(coder) != 0)
-			return(NULL);
-		refactor(coder);
 	}
 	return (NULL);
 }
@@ -85,7 +70,8 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 		if (pthread_mutex_init(&dongle[index].dongle_lock, NULL) != 0)
 			return (1);
 		dongle[index].released_time = 0;
-		memset(dongle->dongle_queue, -1, sizeof(int));
+		dongle[index].dongle_queue[0] = -1;
+		dongle[index].dongle_queue[1] = -1;
 		index++;
 	}
 	return (0);

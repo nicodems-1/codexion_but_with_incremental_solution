@@ -6,12 +6,23 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/19 17:49:32 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/19 20:53:29 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include.h"
 
+int is_burnout(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->param->update_status);
+	if (coder->param->status == BURNOUT || coder->param->status == FINISHED)
+	{
+		pthread_mutex_unlock(&coder->param->update_status);
+		return (1);
+	}
+	pthread_mutex_unlock(&coder->param->update_status);
+	return(0);
+}
 int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 {
 	unsigned long	begin_time;
@@ -21,14 +32,9 @@ int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
 	end_time = begin_time + time_to_sleep;
 	while (current_time(coder->param) < end_time)
 	{
+		if(is_burnout(coder) == 1)
+			return(1);
 		usleep(100);
-		pthread_mutex_lock(&coder->param->update_status);
-		if (coder->param->status == BURNOUT || coder->param->status == FINISHED)
-		{
-			pthread_mutex_unlock(&coder->param->update_status);
-			return (1);
-		}
-		pthread_mutex_unlock(&coder->param->update_status);
 	}
 	return (0);
 }
@@ -61,9 +67,11 @@ int wait_for_dongle(t_dongle *dongle, t_coder *coder)
 		if(dongle->dongle_queue[0] == coder->id)
 		{
 			pthread_mutex_unlock(&dongle->dongle_lock);
-			break;
+			return(0);
 		}
 		pthread_mutex_unlock(&dongle->dongle_lock);
+		if (is_burnout(coder) == 1)
+			return(1);
 		usleep(100);
 	}
 	return(0);
@@ -83,19 +91,23 @@ int	get_dongles(t_coder *coder)
 	if (coder->id % 2 == 0)
 	{
 		update_dongle_queue(coder->left_dongle, coder);
-		wait_for_dongle(coder->left_dongle, coder);
+		if (wait_for_dongle(coder->left_dongle, coder) == 1)
+			return(1);
 		print_logs("has taken a dongle", coder);
 		update_dongle_queue(coder->right_dongle, coder);
-		wait_for_dongle(coder->right_dongle, coder);
+		if (wait_for_dongle(coder->right_dongle, coder) == 1)
+			return(1);
 		print_logs("has taken a dongle", coder);
 	}
 	else
 	{
 		update_dongle_queue(coder->right_dongle, coder);
-		wait_for_dongle(coder->right_dongle, coder);
+		if (wait_for_dongle(coder->right_dongle, coder)== 1)
+			return(1);
 		print_logs("has taken a dongle", coder);
 		update_dongle_queue(coder->left_dongle, coder);
-		wait_for_dongle(coder->left_dongle, coder);
+		if (wait_for_dongle(coder->left_dongle, coder) == 1)
+			return(1);
 		print_logs("has taken a dongle", coder);
 	}
 	return (0);
@@ -117,13 +129,15 @@ int 	release_dongles(t_coder *coder)
 
 int	compilation(t_coder *coder)
 {
-	get_dongles(coder);
+	if (get_dongles(coder) == 1)
+		return(1);
 	pthread_mutex_lock(&coder->coder_mutex);
 	coder->times_compiled += 1;
 	coder->last_compiled = current_time(coder->param);
 	pthread_mutex_unlock(&coder->coder_mutex);
 	print_logs("is compiling", coder);
+	if (ft_usleep(coder->param->time_to_compile, coder) == 1)
+		return(1);
 	release_dongles(coder);
-	ft_usleep(coder->param->time_to_compile, coder);
 	return (0);
 }

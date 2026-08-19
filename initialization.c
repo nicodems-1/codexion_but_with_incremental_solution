@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/19 20:53:22 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/19 20:55:02 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 			% param->number_of_coders];
 		coder[index].param = param;
 		coder[index].id = index + 1;
+		coder[index].times_compiled = 0;
+		coder[index].last_compiled = 0;
 		if (pthread_mutex_init(&coder[index].coder_mutex, NULL) != 0)
 			error = 1;
 		if (pthread_create(&coder[index].coder, NULL, &routine,

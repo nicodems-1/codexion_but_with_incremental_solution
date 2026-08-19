@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/18 17:05:20 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/19 15:32:30 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 		if (pthread_mutex_init(&dongle[index].dongle_lock, NULL) != 0)
 			return (1);
 		dongle[index].released_time = 0;
-		dongle[index].init = 0;
+		memset(dongle->dongle_queue, -1, sizeof(int));
 		index++;
 	}
 	return (0);

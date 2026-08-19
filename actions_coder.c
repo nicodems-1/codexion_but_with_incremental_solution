@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/18 21:04:16 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/19 17:49:32 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,60 +52,67 @@ int	refactor(t_coder *coder)
 		return (1);
 	return (0);
 }
-int	check_dongle_status(t_dongle *dongle, int dongle_cooldown, t_coder *coder)
-{
-	int	time_elapsed;
 
-	if (dongle->init++ == 0 || dongle->id_holding_dongle == 0)
+int wait_for_dongle(t_dongle *dongle, t_coder *coder)
+{
+	while(1)
 	{
-		dongle->id_holding_dongle = coder->id;
-		return (0);
+		pthread_mutex_lock(&dongle->dongle_lock);
+		if(dongle->dongle_queue[0] == coder->id)
+		{
+			pthread_mutex_unlock(&dongle->dongle_lock);
+			break;
+		}
+		pthread_mutex_unlock(&dongle->dongle_lock);
+		usleep(100);
 	}
+	return(0);
+}
+int	update_dongle_queue(t_dongle *dongle, t_coder *coder)
+{
+	pthread_mutex_lock(&dongle->dongle_lock);
+	if(dongle->dongle_queue[0] == -1)
+		dongle->dongle_queue[0] = coder->id;
 	else
-		dongle->priority_dongle_id = coder->id;
-	time_elapsed = current_time(coder->param) - dongle->released_time;
-	if (time_elapsed < dongle_cooldown)
-		if (ft_usleep(dongle_cooldown - time_elapsed, coder) != 0)
-			return (1);
+		dongle->dongle_queue[1] = coder->id;
+	pthread_mutex_unlock(&dongle->dongle_lock);
 	return (0);
 }
 int	get_dongles(t_coder *coder)
 {
 	if (coder->id % 2 == 0)
 	{
-		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown,
-			coder);
-		pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
+		update_dongle_queue(coder->left_dongle, coder);
+		wait_for_dongle(coder->left_dongle, coder);
 		print_logs("has taken a dongle", coder);
-		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
-		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown,
-			coder);
+		update_dongle_queue(coder->right_dongle, coder);
+		wait_for_dongle(coder->right_dongle, coder);
 		print_logs("has taken a dongle", coder);
 	}
 	else
 	{
-		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
-		check_dongle_status(coder->right_dongle, coder->param->dongle_cooldown,
-			coder);
+		update_dongle_queue(coder->right_dongle, coder);
+		wait_for_dongle(coder->right_dongle, coder);
 		print_logs("has taken a dongle", coder);
-		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		check_dongle_status(coder->left_dongle, coder->param->dongle_cooldown,
-			coder);
+		update_dongle_queue(coder->left_dongle, coder);
+		wait_for_dongle(coder->left_dongle, coder);
 		print_logs("has taken a dongle", coder);
 	}
 	return (0);
 }
-
-int	drop_dongles(t_coder *coder)
+int 	release_dongles(t_coder *coder)
 {
-	coder->left_dongle->id_holding_dongle = 0;
-	coder->right_dongle->id_holding_dongle = 0;
+	pthread_mutex_lock(&coder->left_dongle->dongle_lock);
+	coder->left_dongle->dongle_queue[0] = coder->left_dongle->dongle_queue[1];
+	coder->left_dongle->dongle_queue[1] = -1;
 	coder->left_dongle->released_time = current_time(coder->param);
-	coder->right_dongle->released_time = current_time(coder->param);
 	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
+	pthread_mutex_lock(&coder->right_dongle->dongle_lock);
+	coder->right_dongle->dongle_queue[0] = coder->right_dongle->dongle_queue[1];
+	coder->right_dongle->dongle_queue[1] = -1;
+	coder->right_dongle->released_time = current_time(coder->param);
 	pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
-	return (0);
+	return(0);
 }
 
 int	compilation(t_coder *coder)
@@ -116,7 +123,7 @@ int	compilation(t_coder *coder)
 	coder->last_compiled = current_time(coder->param);
 	pthread_mutex_unlock(&coder->coder_mutex);
 	print_logs("is compiling", coder);
+	release_dongles(coder);
 	ft_usleep(coder->param->time_to_compile, coder);
-	drop_dongles(coder);
 	return (0);
 }

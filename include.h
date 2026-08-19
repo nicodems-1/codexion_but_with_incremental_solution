@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/18 17:05:02 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/19 15:24:24 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ typedef struct s_dongle
 	pthread_mutex_t		dongle_lock;
 	int					released_time;
 	int					init;
-	int					priority_dongle_id;
-	int					id_holding_dongle;
+	int					dongle_queue[2];
 }						t_dongle;
 
 int						match_word(char *word1, char *word2);

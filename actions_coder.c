@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/20 01:17:01 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/20 01:32:59 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,30 @@ int	refactor(t_coder *coder)
 	return (0);
 }
 
+int check_cooldown(t_coder *coder, t_dongle * dongle)
+{
+	unsigned long	cooling_check;
+	if(dongle->init == 0)
+	{
+		dongle->init = 1;
+		return(0);
+	}
+	cooling_check = current_time(coder->param) - dongle->released_time;
+	if (cooling_check > coder->param->dongle_cooldown)
+		return(0);
+	else
+		return(1);
+}
+
 int	wait_for_dongle(t_dongle *dongle, t_coder *coder)
 {
 	while (1)
 	{
 		pthread_mutex_lock(&dongle->dongle_lock);
-		if ((dongle->dongle_queue[0] == coder->id)
-			&& (current_time(coder->param)
-				- dongle->released_time > coder->param->dongle_cooldown))
+		if (dongle->dongle_queue[0] == coder->id && check_cooldown(coder, dongle) == 0)
 		{
-			pthread_mutex_unlock(&dongle->dongle_lock);
-			return (0);
+				pthread_mutex_unlock(&dongle->dongle_lock);
+				return (0);
 		}
 		pthread_mutex_unlock(&dongle->dongle_lock);
 		if (is_burnout(coder) == 1)

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/20 01:31:21 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/20 04:15:44 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,20 @@ typedef struct s_coder
 	t_dongle			*right_dongle;
 }						t_coder;
 
+typedef struct s_slot
+{
+	int					coder_id;
+	unsigned long		deadline;
+	int					is_eating;
+} t_slot;
+
 // dongles
 typedef struct s_dongle
 {
 	pthread_mutex_t		dongle_lock;
 	int					released_time;
 	int					init;
-	int					dongle_queue[2];
+	t_slot				dongle_queue[2];
 }						t_dongle;
 
 int						match_word(char *word1, char *word2);

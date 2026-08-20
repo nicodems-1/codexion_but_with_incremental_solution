@@ -29,11 +29,9 @@ fclean:
 	rm -f codexion
 	rm -f build/obj/*.o
 
-valgrind: make
+valgrind: codexion
 	valgrind  --leak-check=full --track-origins=yes  ./codexion $(ARGS) 
 
-hellgrind: make
+hellgrind: codexion
 	valgrind --tool=helgrind 	./codexion $(ARGS)
-
-sanitize: make
 	

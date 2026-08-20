@@ -38,3 +38,11 @@ Order of execution in a normal cycle:
 ->implementing edf
 
 I need to implement my cleaning function so if there is a malloc or pthread_init issue it will clean one time and kill the program;
+
+
+NEW======
+
+-> Making a good clean_exit garbage collector
+->Attention avec last compile
+->Attention avec les valeurs en int (assez grand ??)
+->faire le readme.MD

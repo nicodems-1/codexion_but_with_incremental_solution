@@ -1,27 +1,39 @@
+ARGS = 10 500 100 100 100 2 0 edf
 CC = cc
 CFLAGS = -g3 -Wall -Wextra -Werror
-SRCS := srcs/main.c srcs/parsing.c srcs/initialization.c srcs/cleanup.c srcs/monitor.c srcs/compilation_coders.c srcs/helpers_tools.c
-OBJS    = $(SRCS:.c=.o)
+SRCS := build/srcs/main.c \
+		build/srcs/parsing.c \
+		build/srcs/initialization.c \
+		build/srcs/cleanup.c \
+		build/srcs/monitor.c \
+		build/srcs/compilation_coders.c \
+		build/srcs/helpers_tools.c
+
+OBJS    = $(SRCS:build/srcs/%.c=build/obj/%.o)  
 PTHREAD := -pthread
 INCLUDE_DIRS := -I./include
 
-make: $(OBJS)
+all: $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) $(PTHREAD) -o codexion $(OBJS)
 
-run: make
-	./codexion 10 500 100 100 100 2 0 edf
+run: codexion
+	./codexion $(ARGS)
+
+build/obj/%.o: build/srcs/%.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
 
 clean:
-	rm -f srcs/*.o
+	rm -f build/srcs/*.o
 
 fclean:
-	rm -f codexion *.o
+	rm -f codexion
+	rm -f build/obj/*.o
 
 valgrind: make
-	valgrind  --leak-check=full --track-origins=yes  ./codexion 5 500 60 60 60 20 0 fifo  
+	valgrind  --leak-check=full --track-origins=yes  ./codexion $(ARGS) 
 
 hellgrind: make
-	valgrind --tool=helgrind 	./codexion 10 2000000 100 100 100 10 0 fifo 
+	valgrind --tool=helgrind 	./codexion $(ARGS)
 
 sanitize: make
 	

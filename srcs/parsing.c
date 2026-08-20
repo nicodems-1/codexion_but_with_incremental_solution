@@ -6,21 +6,23 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/16 03:02:23 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/20 22:51:12 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include.h"
 
-int	valid_length(char *number)
+int	ft_is_number(char *number)
 {
 	int	i;
 
 	i = 0;
-	while (number[i])
+	while (number[i] != 0)
+	{
+		if ((number[i] > '9' || number[i] < '0'))
+			return (1);
 		i++;
-	if (i > 10)
-		return (1);
+	}
 	return (0);
 }
 
@@ -55,7 +57,7 @@ int	basic_parsing(char **av)
 	i = 1;
 	while (i < 8)
 	{
-		if (valid_length(av[i]) == 1)
+		if (strlen(av[i]) > 10)
 		{
 			printf("Arg[%d]: \"%s\" length is too long\n", i, av[i]);
 			return (1);
@@ -72,7 +74,7 @@ int	basic_parsing(char **av)
 
 int	parse_flag(char *flag, t_param *param)
 {
-	if ((match_word("fifo", flag) == 0) || match_word("edf", flag) == 0)
+	if ((strcmp("fifo", flag) == 0) || strcmp("edf", flag) == 0)
 	{
 		param->scheduler = flag;
 		return (0);

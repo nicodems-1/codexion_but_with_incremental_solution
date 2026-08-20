@@ -1,43 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   actions_coder.c                                    :+:      :+:    :+:   */
+/*   compilation_coders.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/20 05:32:45 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/20 23:10:48 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include.h"
-
-int	is_burnout(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->param->update_status);
-	if (coder->param->status == BURNOUT || coder->param->status == FINISHED)
-	{
-		pthread_mutex_unlock(&coder->param->update_status);
-		return (1);
-	}
-	pthread_mutex_unlock(&coder->param->update_status);
-	return (0);
-}
-int	ft_usleep(unsigned long time_to_sleep, t_coder *coder)
-{
-	unsigned long	begin_time;
-	unsigned long	end_time;
-
-	begin_time = current_time(coder->param);
-	end_time = begin_time + time_to_sleep;
-	while (current_time(coder->param) < end_time)
-	{
-		if (is_burnout(coder) == 1)
-			return (1);
-		usleep(100);
-	}
-	return (0);
-}
 
 int	debug(t_coder *coder)
 {
@@ -53,22 +26,6 @@ int	refactor(t_coder *coder)
 	if (ft_usleep(coder->param->time_to_refactor, coder) != 0)
 		return (1);
 	return (0);
-}
-
-int	check_cooldown(t_coder *coder, t_dongle *dongle)
-{
-	unsigned long	cooling_check;
-
-	if (dongle->init == 0)
-	{
-		dongle->init = 1;
-		return (0);
-	}
-	cooling_check = current_time(coder->param) - dongle->released_time;
-	if (cooling_check > coder->param->dongle_cooldown)
-		return (0);
-	else
-		return (1);
 }
 
 int	wait_for_dongle(t_dongle *dongle, t_coder *coder)
@@ -133,6 +90,7 @@ int	update_dongle_queue(t_dongle *dongle, t_coder *coder)
 	pthread_mutex_unlock(&dongle->dongle_lock);
 	return (0);
 }
+
 int get_dongles(t_coder *coder)
 {
     if(coder->id % 2 == 0)

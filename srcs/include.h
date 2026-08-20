@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/20 04:15:44 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/20 23:26:43 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_slot
 	int					coder_id;
 	unsigned long		deadline;
 	int					is_eating;
-} t_slot;
+}						t_slot;
 
 // dongles
 typedef struct s_dongle
@@ -97,4 +97,7 @@ int						compilation(t_coder *coder);
 void					join_threads(t_coder *coder_array);
 void					*monitor(void *arguments);
 void					*ft_calloc(size_t nmemb, size_t size);
+int						ft_usleep(unsigned long time_to_sleep, t_coder *coder);
+int						is_burnout(t_coder *coder);
+int						check_cooldown(t_coder *coder, t_dongle *dongle);
 #endif

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 20:54:30 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 21:08:26 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	join_threads(t_coder *coder_array, int count)
 {
 	int	i;
 
+	i = 0;
 	while (i < count)
 	{
 		pthread_join(coder_array[i].coder, NULL);
@@ -84,13 +85,13 @@ int	clean_exit(t_param *param, int step, int failed_idx)
 	dongle = param->dongles;
 	total = param->number_of_coders;
 	if (step >= 6)
-		join_threads(param->monitor_thread, NULL);
+		pthread_join(param->monitor_thread, NULL);
 	if (step >= 5)
 		join_threads(coder, get_count(5, step, failed_idx, total));
 	if (step >= 4)
 		destroy_mutex_spe(param, get_count(5, step, failed_idx, total));
 	if (step >= 3)
-		destroy_dongles_mutexes(coder, get_count(3, step, failed_idx, total));
+		destroy_dongles_mutexes(dongle, get_count(3, step, failed_idx, total));
 	if (step >= 2)
 		destroy_coder_mutexes(coder, get_count(2, step, failed_idx, total));
 	if (step >= 1)

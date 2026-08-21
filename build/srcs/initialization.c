@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 21:05:48 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 22:24:52 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 	while (index < (param->number_of_coders))
 	{
 		if (pthread_mutex_init(&dongle[index].dongle_lock, NULL) != 0)
-			return (clean_exit(param, 3, index + 1));
+			return (clean_exit(param, 3, index));
 		dongle[index].released_time = 0;
 		dongle[index].dongle_queue[0].coder_id = -1;
 		dongle[index].dongle_queue[1].coder_id = -1;
@@ -79,7 +79,7 @@ int	init_coders_mutex(t_param *param, t_coder *coder)
 	while (index < (param->number_of_coders))
 	{
 		if (pthread_mutex_init(&coder[index].coder_mutex, NULL) != 0)
-			return (clean_exit(param, 2, index + 1));
+			return (clean_exit(param, 2, index));
 		index++;
 	}
 	return (0);
@@ -106,17 +106,26 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 	}
 	return (0);
 }
-
+int	alloc_memory(t_param *param)
+{
+	param->coders = NULL;
+	param->dongles = NULL;
+	param->coders = malloc(param->number_of_coders * sizeof(t_coder));
+	param->dongles = malloc(param->number_of_coders * sizeof(t_dongle));
+	if (!param->dongles || !param->coders)
+		return (1);
+	return (0);
+}
 int	initialization(t_param *param)
 {
 	t_coder		*coder;
 	t_dongle	*dongle;
 	pthread_t	monitor_thread;
 
-	dongle = malloc(param->number_of_coders * sizeof(t_dongle));
-	coder = malloc(param->number_of_coders * sizeof(t_coder));
-	param->dongles = dongle;
-	param->coders = coder;
+	if (alloc_memory(param) != 0)
+		return (clean_exit(param, 1, 0));
+	dongle = param->dongles;
+	coder = param->coders;
 	if (init_coders_mutex(param, coder) != 0)
 		return (1);
 	if (init_dongles(param, dongle) != 0)

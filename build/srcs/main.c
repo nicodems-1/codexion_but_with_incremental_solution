@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 13:03:36 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 07:50:04 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 22:10:27 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ int	main(int ac, char **av)
 		free(param);
 		return (1);
 	}
-	initialization(param);
+	if (initialization(param) != 0)
+	{
+		free(param);
+		return (1);
+	}
 	free(param);
 }

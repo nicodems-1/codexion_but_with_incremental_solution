@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 22:33:14 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 01:45:07 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ int	update_dongle_queue(t_dongle *dongle, t_coder *coder)
 		}
 		else if ((dongle->dongle_queue[0].coder_id != -1)
 			&& (dongle->dongle_queue[0].deadline > deadline)
-			&& (dongle->dongle_queue->is_eating == 0))
+			&& (dongle->dongle_queue[0].is_compiling == 0))
 		{
 			dongle->dongle_queue[1].coder_id = dongle->dongle_queue[0].coder_id;
 			dongle->dongle_queue[1].deadline = dongle->dongle_queue[0].deadline;
-			dongle->dongle_queue[1].is_eating = 0;
+			dongle->dongle_queue[1].is_compiling = 0;
 			dongle->dongle_queue[0].deadline = deadline;
 			dongle->dongle_queue[0].coder_id = coder->id;
-			dongle->dongle_queue[0].is_eating = 0;
+			dongle->dongle_queue[0].is_compiling = 0;
 		}
 		else
 		{
@@ -100,14 +100,14 @@ int	get_dongles(t_coder *coder)
 		if (wait_for_dongle(coder->left_dongle, coder) == 1)
 			return (1);
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		coder->left_dongle->dongle_queue[0].is_eating = 1;
+		coder->left_dongle->dongle_queue[0].is_compiling = 1;
 		pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
 		print_logs("has taken a dongle", coder);
 		update_dongle_queue(coder->right_dongle, coder);
 		if (wait_for_dongle(coder->right_dongle, coder) == 1)
 			return (1);
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
-		coder->right_dongle->dongle_queue[0].is_eating = 1;
+		coder->right_dongle->dongle_queue[0].is_compiling = 1;
 		pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
 		print_logs("has taken a dongle", coder);
 	}
@@ -117,14 +117,14 @@ int	get_dongles(t_coder *coder)
 		if (wait_for_dongle(coder->right_dongle, coder) == 1)
 			return (1);
 		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
-		coder->right_dongle->dongle_queue[0].is_eating = 1;
+		coder->right_dongle->dongle_queue[0].is_compiling = 1;
 		pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
 		print_logs("has taken a dongle", coder);
 		update_dongle_queue(coder->left_dongle, coder);
 		if (wait_for_dongle(coder->left_dongle, coder) == 1)
 			return (1);
 		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		coder->left_dongle->dongle_queue[0].is_eating = 1;
+		coder->left_dongle->dongle_queue[0].is_compiling = 1;
 		pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
 		print_logs("has taken a dongle", coder);
 	}
@@ -137,15 +137,15 @@ int	release_dongles(t_coder *coder)
 	coder->left_dongle->dongle_queue[0].coder_id = coder->left_dongle->dongle_queue[1].coder_id;
 	coder->left_dongle->dongle_queue[1].coder_id = -1;
 	coder->left_dongle->released_time = current_time(coder->param);
-	coder->left_dongle->dongle_queue[0].is_eating = 0;
+	coder->left_dongle->dongle_queue[0].is_compiling = 0;
 	coder->left_dongle->dongle_queue[0].deadline = coder->left_dongle->dongle_queue[1].deadline;
 	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
 	pthread_mutex_lock(&coder->right_dongle->dongle_lock);
 	coder->right_dongle->dongle_queue[0].coder_id = coder->right_dongle->dongle_queue[1].coder_id;
 	coder->right_dongle->dongle_queue[1].coder_id = -1;
 	coder->right_dongle->released_time = current_time(coder->param);
-	coder->right_dongle->dongle_queue[0].is_eating = 0;
-	coder->left_dongle->dongle_queue[0].deadline = coder->right_dongle->dongle_queue[1].deadline;
+	coder->right_dongle->dongle_queue[0].is_compiling = 0;
+	coder->right_dongle->dongle_queue[0].deadline = coder->right_dongle->dongle_queue[1].deadline;
 	pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
 	return (0);
 }

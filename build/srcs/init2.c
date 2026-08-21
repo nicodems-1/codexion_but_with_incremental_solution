@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/21 22:42:42 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 22:43:30 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 01:45:10 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 		dongle[index].released_time = 0;
 		dongle[index].dongle_queue[0].coder_id = -1;
 		dongle[index].dongle_queue[1].coder_id = -1;
-		dongle[index].dongle_queue->is_eating = 0;
+		dongle[index].dongle_queue->is_compiling = 0;
 		dongle[index].dongle_queue->deadline = 0;
 		dongle[index].init = 0;
 		index++;
@@ -60,29 +60,6 @@ int	init_coders_mutex(t_param *param, t_coder *coder)
 	{
 		if (pthread_mutex_init(&coder[index].coder_mutex, NULL) != 0)
 			return (clean_exit(param, 2, index));
-		index++;
-	}
-	return (0);
-}
-
-int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
-{
-	int	index;
-
-	index = 0;
-	param->status = RUNNING;
-	while (index < (param->number_of_coders))
-	{
-		coder[index].left_dongle = &dongle[index];
-		coder[index].right_dongle = &dongle[(index + 1)
-			% param->number_of_coders];
-		coder[index].param = param;
-		coder[index].id = index + 1;
-		coder[index].times_compiled = 0;
-		coder[index].last_compiled = 0;
-		if (pthread_create(&coder[index].coder, NULL, &routine,
-				&coder[index]) != 0)
-			return (clean_exit(param, 5, index + 1));
 		index++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 20:39:48 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 01:45:09 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_slot
 {
 	int					coder_id;
 	unsigned long		deadline;
-	int					is_eating;
+	int					is_compiling;
 }						t_slot;
 
 // dongles

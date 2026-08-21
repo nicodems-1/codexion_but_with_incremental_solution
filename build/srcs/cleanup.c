@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 21:08:26 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 22:13:56 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	clean_exit(t_param *param, int step, int failed_idx)
 	t_dongle	*dongle;
 	int			total;
 
-	coder = param->coders;
+	coder = NULL;
 	dongle = param->dongles;
 	total = param->number_of_coders;
 	if (step >= 6)

@@ -30,7 +30,7 @@ fclean:
 	rm -f build/obj/*.o
 
 valgrind: codexion
-	valgrind  --leak-check=full --track-origins=yes  ./codexion $(ARGS) 
+	valgrind  --leak-check=full --track-origins=yes  --show-reachable=yes -s --show-leak-kinds=all ./codexion $(ARGS) 
 
 hellgrind: codexion
 	valgrind --tool=helgrind 	./codexion $(ARGS)

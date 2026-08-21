@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 06:44:55 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 06:58:38 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ void	join_threads(t_coder *coder_array, int index)
 	}
 }
 
-void	destroy_mutex_spe(t_coder *coder_array, t_dongle *dongle_array, int index)
+void	destroy_mutex_spe(t_coder *coder_array)
 {
 	t_param	*param;
-	int		i;
 
 	param = coder_array[0].param;
 	pthread_mutex_destroy(&param->update_status);
@@ -43,7 +42,7 @@ void	destroy_mutex_spe(t_coder *coder_array, t_dongle *dongle_array, int index)
 	pthread_mutex_destroy(&param->time_mutex);
 }
 
-void	destroy_coder_mutexes(t_coder *coder_array, t_dongle *dongle_array, int index)
+void	destroy_coder_mutexes(t_coder *coder_array, int index)
 {
 	t_param	*param;
 	int		i;	
@@ -85,8 +84,9 @@ void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 
 void	clean_exit(t_coder *coder_array, t_dongle *dongle_array, int index, int where)
 {
+	where = 0;
 	join_threads(coder_array, index);
 	destroy_dongles_mutexes(coder_array, dongle_array, index);
-	destroy_coder_mutexes(coder_array, dongle_array, index);
+	destroy_coder_mutexes(coder_array, index);
 	free_allocation(coder_array, dongle_array);
 }

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/20 23:10:48 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 08:14:46 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,12 +147,14 @@ int	release_dongles(t_coder *coder)
 	coder->left_dongle->dongle_queue[1].coder_id = -1;
 	coder->left_dongle->released_time = current_time(coder->param);
 	coder->left_dongle->dongle_queue[0].is_eating = 0;
+	coder->left_dongle->dongle_queue[0].deadline = coder->left_dongle->dongle_queue[1].deadline;
 	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
 	pthread_mutex_lock(&coder->right_dongle->dongle_lock);
 	coder->right_dongle->dongle_queue[0].coder_id = coder->right_dongle->dongle_queue[1].coder_id;
 	coder->right_dongle->dongle_queue[1].coder_id = -1;
 	coder->right_dongle->released_time = current_time(coder->param);
 	coder->right_dongle->dongle_queue[0].is_eating = 0;
+	coder->left_dongle->dongle_queue[0].deadline = coder->right_dongle->dongle_queue[1].deadline;
 	pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
 	return (0);
 }

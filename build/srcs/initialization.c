@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 22:24:52 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 22:34:06 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	*routine(void *arguments)
 	}
 	return (NULL);
 }
+
 int	mutex_init(t_param *param)
 {
 	int	error;
@@ -71,6 +72,7 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 	}
 	return (0);
 }
+
 int	init_coders_mutex(t_param *param, t_coder *coder)
 {
 	int	index;
@@ -84,6 +86,7 @@ int	init_coders_mutex(t_param *param, t_coder *coder)
 	}
 	return (0);
 }
+
 int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 {
 	int	index;
@@ -106,6 +109,7 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 	}
 	return (0);
 }
+
 int	alloc_memory(t_param *param)
 {
 	param->coders = NULL;
@@ -116,6 +120,7 @@ int	alloc_memory(t_param *param)
 		return (1);
 	return (0);
 }
+
 int	initialization(t_param *param)
 {
 	t_coder		*coder;

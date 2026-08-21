@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:47 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 07:49:21 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 22:30:19 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ unsigned long	current_time(t_param *param)
 {
 	unsigned long	current;
 	struct timeval	tv;
-	
+
 	pthread_mutex_lock(&param->time_mutex);
 	gettimeofday(&tv, NULL);
 	if (param->time_initialized == 0)

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 22:26:22 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 22:31:17 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 	free(coder_array);
 	free(dongle_array);
 }
+
 static int	get_count(int current_step, int failed_step, int failed_idx,
 		int total)
 {

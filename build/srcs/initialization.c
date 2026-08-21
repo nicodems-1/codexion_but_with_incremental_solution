@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 06:29:25 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 07:05:58 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,15 @@ int	mutex_init(t_param *param)
 
 	error = 0;
 	if (pthread_mutex_init(&param->print_lock, NULL) != 0)
-		error = 1;
-	if (pthread_mutex_init(&param->time_mutex, NULL))
-		error = 1;
+		return(0);
+	if (pthread_mutex_init(&param->lock_race, NULL))
+		return(1);
+	if (pthread_mutex_init(&param->update_status, NULL) != 0)
+		return(2);
+	if (pthread_mutex_init(&param->time_mutex, NULL) != 0)
+		return(3);
+	if(pthread_cond_init(&param->starting_race, NULL) != 0)
+		return(4);
 	return (error);
 }
 
@@ -50,7 +56,6 @@ int	init_dongles(t_param *param, t_dongle *dongle)
 	int	index;
 
 	param->unlock_race = 0;
-	pthread_cond_init(&param->starting_race, NULL);
 	index = 0;
 	while (index < (param->number_of_coders))
 	{
@@ -119,6 +124,7 @@ int	initialization(t_param *param)
 	test = init_coders_mutex(param, coder);
 	if (test != 0)
 		clean_exit(coder, dongle, test, 2);
+	test = mutex_init(param);
 	test = init_coders(param, coder, dongle);
 	if(test != 0)
 		clean_exit(coder, dongle, test, 3);

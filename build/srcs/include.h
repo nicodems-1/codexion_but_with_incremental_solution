@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/20 23:26:43 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 06:25:31 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,12 @@ int						parsing(int ac, char **av, t_param *param);
 int						initialization(t_param *param);
 unsigned long			current_time(t_param *param);
 void					clean_exit(t_coder *coder_array,
-							t_dongle *dongle_array);
+							t_dongle *dongle_array, int index, int where);
 int						print_logs(char *action, t_coder *coder);
 int						debug(t_coder *coder);
 int						refactor(t_coder *coder);
 int						compilation(t_coder *coder);
-void					join_threads(t_coder *coder_array);
+void					join_threads(t_coder *coder_array, int index);
 void					*monitor(void *arguments);
 void					*ft_calloc(size_t nmemb, size_t size);
 int						ft_usleep(unsigned long time_to_sleep, t_coder *coder);

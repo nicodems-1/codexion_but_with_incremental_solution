@@ -6,28 +6,31 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/16 03:51:17 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/21 06:44:55 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include.h"
 
-void	join_threads(t_coder *coder_array)
+void	join_threads(t_coder *coder_array, int index)
 {
 	t_param	*param;
 	int		i;
 
 	param = coder_array[0].param;
 	i = 0;
+	if(index == 0)
+		index = param->number_of_coders;
+
 	pthread_join(param->monitor_thread, NULL);
-	while (i < param->number_of_coders)
+	while (i < index)
 	{
 		pthread_join(coder_array[i].coder, NULL);
 		i++;
 	}
 }
 
-void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
+void	destroy_mutex_spe(t_coder *coder_array, t_dongle *dongle_array, int index)
 {
 	t_param	*param;
 	int		i;
@@ -38,10 +41,34 @@ void	destroy_mutexes(t_coder *coder_array, t_dongle *dongle_array)
 	pthread_cond_destroy(&param->starting_race);
 	pthread_mutex_destroy(&param->print_lock);
 	pthread_mutex_destroy(&param->time_mutex);
+}
+
+void	destroy_coder_mutexes(t_coder *coder_array, t_dongle *dongle_array, int index)
+{
+	t_param	*param;
+	int		i;	
+	param = coder_array[0].param;
 	i = 0;
-	while (i < param->number_of_coders)
+	if(index == 0)
+		index = param->number_of_coders;
+	while (i < index)
 	{
 		pthread_mutex_destroy(&coder_array[i].coder_mutex);
+		i++;
+	}
+}
+
+void	destroy_dongles_mutexes(t_coder *coder_array, t_dongle *dongle_array, int index)
+{
+	t_param	*param;
+	int		i;
+	
+	param = coder_array[0].param;
+	i = 0;
+	if(index == 0)
+		index = param->number_of_coders;
+	while (i < index)
+	{
 		pthread_mutex_destroy(&dongle_array[i].dongle_lock);
 		i++;
 	}
@@ -56,9 +83,10 @@ void	free_allocation(t_coder *coder_array, t_dongle *dongle_array)
 	free(dongle_array);
 }
 
-void	clean_exit(t_coder *coder_array, t_dongle *dongle_array)
+void	clean_exit(t_coder *coder_array, t_dongle *dongle_array, int index, int where)
 {
-	join_threads(coder_array);
-	destroy_mutexes(coder_array, dongle_array);
+	join_threads(coder_array, index);
+	destroy_dongles_mutexes(coder_array, dongle_array, index);
+	destroy_coder_mutexes(coder_array, dongle_array, index);
 	free_allocation(coder_array, dongle_array);
 }

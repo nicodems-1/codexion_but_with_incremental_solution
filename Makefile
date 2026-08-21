@@ -1,4 +1,4 @@
-ARGS = 10 500 100 100 100 2 0 edf
+ARGS = 10 300 100 100 100 2 0 fifo
 CC = cc
 CFLAGS = -g3 -Wall -Wextra -Werror
 SRCS := build/srcs/main.c \

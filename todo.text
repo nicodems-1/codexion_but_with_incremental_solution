@@ -50,7 +50,12 @@ NEW======
 NEWNEW
 --verouiller le parsing avec codeur qui doit etre un chiffre entre 0 et 500 done
 --Patcher si il n'y a qu'un seul codeur(file d'attente corromp les logs) done
---breakdown huge function like take dongle and dongle queue in smaller function and understand really well what does what 
---renaming files-names accordingly, be coherent
---DO not forget to remove WILDCARDS makefile
---make the readme with the ai
+--breakdown huge function like take dongle and dongle queue in smaller function and understand really well what does what done
+--renaming files-names accordingly, be coherent done
+--DO not forget to remove WILDCARDS makefile done
+--make the readme with the ai done
+
+verifier les problemes de unsigned long si le programme tourne tres tres tres longtemps done
+
+AJOUTER LE TIE BREAKER 
+regarder la difficulte pr faire un LIFO

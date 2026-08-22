@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 03:35:31 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:02:13 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,10 @@ typedef struct s_dongle
 	t_slot				dongle_queue[2];
 }						t_dongle;
 
-int						match_word(char *word1, char *word2);
-int						ft_is_number(char *number);
 int						parsing(int ac, char **av, t_param *param);
-int						initialization(t_param *param);
 unsigned long			current_time(t_param *param);
+int						initialization(t_param *param);
+
 int						clean_exit(t_param *param, int step, int failed_idx);
 int						print_logs(char *action, t_coder *coder);
 int						debug(t_coder *coder);
@@ -95,7 +94,6 @@ int						refactor(t_coder *coder);
 int						compilation(t_coder *coder);
 void					join_threads(t_coder *coder_array, int index);
 void					*monitor(void *arguments);
-void					*ft_calloc(size_t nmemb, size_t size);
 int						ft_usleep(unsigned long time_to_sleep, t_coder *coder);
 int						is_burnout(t_coder *coder);
 int						check_cooldown(t_coder *coder, t_dongle *dongle);

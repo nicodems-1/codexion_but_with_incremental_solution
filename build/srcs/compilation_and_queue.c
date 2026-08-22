@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 04:16:30 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 05:14:56 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	update_dongle_queue(t_dongle *dongle, t_coder *coder)
 			dongle->dongle_queue[1].coder_id = coder->id;
 	}
 	if (strcmp("edf", coder->param->scheduler) == 0)
-		update_dongle_queue(dongle, coder);
+		edf_queue(dongle, coder);
 	pthread_mutex_unlock(&dongle->dongle_lock);
 }
 

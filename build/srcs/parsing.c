@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/20 22:51:12 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 02:48:58 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,8 @@ int	parsing(int ac, char **av, t_param *param)
 	int	index;
 
 	if (ac != 9)
-	{
-		printf("Args count must be 8, current args count = %d\n", ac - 1);
-		return (1);
-	}
+		return (printf("Args count must be 8, current args count = %d\n", ac
+				- 1), 1);
 	if (basic_parsing(av) == 1)
 		return (1);
 	else if ((update_struct(av, param)) != 0)
@@ -100,11 +98,14 @@ int	parsing(int ac, char **av, t_param *param)
 			av[index]);
 		return (1);
 	}
-	else if (parse_flag(av[8], param) == 1)
+	else if (param->number_of_coders <= 0 || param->number_of_coders >= 500)
 	{
-		printf("Arg[8]: \"%s\" not accepted,instead try: \"edf\" or \"fifo\"\n",
-			av[8]);
+		printf("You must give a nb of coder between 0 and 500, current == %d\n",
+			param->number_of_coders);
 		return (1);
 	}
+	else if (parse_flag(av[8], param) == 1)
+		return (printf("Arg[8]: \"%s\" not accepted,instead try: \"edf\" or \"fifo\"\n",
+				av[8]), 1);
 	return (0);
 }

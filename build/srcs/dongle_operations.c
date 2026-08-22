@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dongle_op.c                                        :+:      :+:    :+:   */
+/*   dongle_operations.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 03:20:09 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 03:34:04 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:14:03 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include.h"
+#include "codexion.h"
+#include <unistd.h>
 
 int	wait_for_dongle(t_dongle *dongle, t_coder *coder)
 {

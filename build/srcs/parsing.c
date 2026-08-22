@@ -6,11 +6,14 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 03:23:58 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:21:24 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include.h"
+#include "codexion.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int	ft_is_number(char *number)
 {

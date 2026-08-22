@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   include.h                                          :+:      :+:    :+:   */
+/*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 04:02:13 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:19:56 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INCLUDE_H
-# define INCLUDE_H
+#ifndef CODEXION_H
+# define CODEXION_H
 # include <pthread.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/time.h>
-# include <unistd.h>
+// # include <stdlib.h>
 
 typedef struct s_dongle	t_dongle;
 typedef struct s_coder	t_coder;

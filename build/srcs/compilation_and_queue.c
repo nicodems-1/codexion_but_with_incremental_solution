@@ -6,11 +6,12 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 03:21:19 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:16:30 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include.h"
+#include "codexion.h"
+#include <string.h>
 
 int	debug(t_coder *coder)
 {

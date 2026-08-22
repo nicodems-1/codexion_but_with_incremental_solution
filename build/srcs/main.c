@@ -6,11 +6,13 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 13:03:36 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 22:10:27 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:20:39 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include.h"
+#include "codexion.h"
+#include "string.h"
+#include <stdlib.h>
 
 int	main(int ac, char **av)
 {

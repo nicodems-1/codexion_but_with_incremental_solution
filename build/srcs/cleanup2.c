@@ -6,11 +6,12 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/21 22:39:56 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 22:40:26 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:20:17 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include.h"
+#include "codexion.h"
+#include <stdlib.h>
 
 void	join_threads(t_coder *coder_array, int count)
 {

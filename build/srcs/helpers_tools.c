@@ -6,11 +6,14 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:47 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/21 22:30:19 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:18:42 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include.h"
+#include "codexion.h"
+#include <stdio.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 unsigned long	current_time(t_param *param)
 {

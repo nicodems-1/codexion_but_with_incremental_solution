@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 03:04:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 04:18:54 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 04:48:55 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ void	*finished(t_coder *coders, int coder_id)
 
 void	*lauch_monitor(t_coder *coders)
 {
-	int	i;
-	int	nb_of_finished;
+	int				i;
+	unsigned long	burn_time;
+	int				nb_of_finished;
 
 	while (1)
 	{
@@ -50,8 +51,9 @@ void	*lauch_monitor(t_coder *coders)
 		while (i < coders[0].param->number_of_coders)
 		{
 			pthread_mutex_lock(&coders[i].coder_mutex);
+			burn_time = (unsigned long)coders[0].param->time_to_burnout;
 			if ((current_time(coders[0].param)
-					- coders[i].last_compiled) > (unsigned long)coders[0].param->time_to_burnout)
+					- coders[i].last_compiled) > burn_time)
 				return (burnout(coders, i));
 			if (coders[i].times_compiled >= coders[i].param->nb_compiles)
 				nb_of_finished++;

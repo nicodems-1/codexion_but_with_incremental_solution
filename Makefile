@@ -10,6 +10,7 @@ INCLUDE_DIRS := -I./include
 all: $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) $(PTHREAD) -o codexion $(OBJS)
 
+
 run: codexion
 	./codexion $(ARGS)
 
@@ -22,6 +23,8 @@ clean:
 fclean:
 	rm -f codexion
 	rm -f build/obj/*.o
+
+re: fclean all
 
 valgrind: codexion
 	valgrind  --leak-check=full --track-origins=yes  --show-reachable=yes -s --show-leak-kinds=all ./codexion $(ARGS) 

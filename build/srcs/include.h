@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 02:25:32 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 03:35:31 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,7 @@ int						mutex_init(t_param *param);
 int						init_dongles(t_param *param, t_dongle *dongle);
 int						alloc_memory(t_param *param);
 int						init_coders_mutex(t_param *param, t_coder *coder);
+int						get_dongles(t_coder *coder);
+int						release_dongles(t_coder *coder);
+void					update_dongle_queue(t_dongle *dongle, t_coder *coder);
 #endif

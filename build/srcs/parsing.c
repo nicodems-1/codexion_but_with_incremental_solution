@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 02:51:52 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 03:23:58 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	parsing(int ac, char **av, t_param *param)
 		return (1);
 	}
 	else if (parse_flag(av[8], param) == 1)
-		return (printf("Arg[8]: \"%s\" not accepted,instead try: \"edf\" or \"fifo\"\n",
-				av[8]), 1);
+		return (printf("Arg[8]: \"%s\" wrong: \"edf\" or \"fifo\"\n", av[8]),
+			1);
 	return (0);
 }

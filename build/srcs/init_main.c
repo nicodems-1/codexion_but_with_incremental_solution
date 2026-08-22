@@ -6,11 +6,19 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 02:59:07 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 03:35:50 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include.h"
+
+void	lone_coder(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->left_dongle->dongle_lock);
+	print_logs("has taken a dongle", coder);
+	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
+	ft_usleep(coder->param->time_to_burnout, coder);
+}
 
 void	*routine(void *arguments)
 {
@@ -23,13 +31,7 @@ void	*routine(void *arguments)
 			&coder->param->lock_race);
 	pthread_mutex_unlock(&coder->param->lock_race);
 	if (coder->param->number_of_coders == 1)
-	{
-		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		print_logs("has taken a dongle", coder);
-		pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
-		ft_usleep(coder->param->time_to_burnout, coder);
-		return (NULL);
-	}
+		lone_coder(coder);
 	while (1)
 	{
 		if (compilation(coder) != 0)

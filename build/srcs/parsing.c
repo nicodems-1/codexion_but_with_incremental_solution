@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:31:28 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 02:48:58 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 02:51:52 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	parsing(int ac, char **av, t_param *param)
 			av[index]);
 		return (1);
 	}
-	else if (param->number_of_coders <= 0 || param->number_of_coders >= 500)
+	else if (param->number_of_coders <= 0 || param->number_of_coders > 500)
 	{
 		printf("You must give a nb of coder between 0 and 500, current == %d\n",
 			param->number_of_coders);

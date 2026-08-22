@@ -46,3 +46,11 @@ NEW======
 ->Attention avec last compile
 ->Attention avec les valeurs en int (assez grand ??)
 ->faire le readme.MD
+
+NEWNEW
+--breakdown huge function like take dongle and dongle queue in smaller function and understand really well what does what
+--renaming files-names accordingly, be coherent
+--Patcher si il n'y a qu'un seul codeur(file d'attente corromp les logs)
+--verouiller le parsing avec codeur qui doit etre un chiffre entre 0 et 500
+--make the readme with the ai
+

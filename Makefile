@@ -1,13 +1,7 @@
 ARGS = 10 300 100 100 100 2 0 fifo
 CC = cc
 CFLAGS = -g3 -Wall -Wextra -Werror
-SRCS := build/srcs/main.c \
-		build/srcs/parsing.c \
-		build/srcs/initialization.c \
-		build/srcs/cleanup.c \
-		build/srcs/monitor.c \
-		build/srcs/compilation_coders.c \
-		build/srcs/helpers_tools.c
+SRCS := $(wildcard build/srcs/*.c)
 
 OBJS    = $(SRCS:build/srcs/%.c=build/obj/%.o)  
 PTHREAD := -pthread

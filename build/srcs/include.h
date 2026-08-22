@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 01:45:09 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 02:25:32 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,14 @@ void					*ft_calloc(size_t nmemb, size_t size);
 int						ft_usleep(unsigned long time_to_sleep, t_coder *coder);
 int						is_burnout(t_coder *coder);
 int						check_cooldown(t_coder *coder, t_dongle *dongle);
+void					destroy_mutex_spe(t_param *param, int count);
+void					destroy_dongles_mutexes(t_dongle *dongle_array,
+							int count);
+void					destroy_coder_mutexes(t_coder *coder_array, int count);
+void					free_allocation(t_coder *coder_array,
+							t_dongle *dongle_array);
+int						mutex_init(t_param *param);
+int						init_dongles(t_param *param, t_dongle *dongle);
+int						alloc_memory(t_param *param);
+int						init_coders_mutex(t_param *param, t_coder *coder);
 #endif

@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 02:25:31 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/08/22 03:13:20 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,36 @@ int	wait_for_dongle(t_dongle *dongle, t_coder *coder)
 	return (0);
 }
 
-int	update_dongle_queue(t_dongle *dongle, t_coder *coder)
+void	edf_queue(t_dongle *dongle, t_coder *coder)
 {
 	unsigned long	deadline;
 
+	deadline = coder->last_compiled + coder->param->time_to_burnout;
+	if (dongle->dongle_queue[0].coder_id == -1)
+	{
+		dongle->dongle_queue[0].coder_id = coder->id;
+		dongle->dongle_queue[0].deadline = deadline;
+	}
+	else if ((dongle->dongle_queue[0].coder_id != -1)
+		&& (dongle->dongle_queue[0].deadline > deadline)
+		&& (dongle->dongle_queue[0].is_compiling == 0))
+	{
+		dongle->dongle_queue[1].coder_id = dongle->dongle_queue[0].coder_id;
+		dongle->dongle_queue[1].deadline = dongle->dongle_queue[0].deadline;
+		dongle->dongle_queue[1].is_compiling = 0;
+		dongle->dongle_queue[0].deadline = deadline;
+		dongle->dongle_queue[0].coder_id = coder->id;
+		dongle->dongle_queue[0].is_compiling = 0;
+	}
+	else
+	{
+		dongle->dongle_queue[1].coder_id = coder->id;
+		dongle->dongle_queue[1].deadline = deadline;
+	}
+}
+
+void	update_dongle_queue(t_dongle *dongle, t_coder *coder)
+{
 	pthread_mutex_lock(&coder->coder_mutex);
 	if (coder->last_compiled == 0)
 		coder->last_compiled = current_time(coder->param);
@@ -64,69 +90,35 @@ int	update_dongle_queue(t_dongle *dongle, t_coder *coder)
 			dongle->dongle_queue[1].coder_id = coder->id;
 	}
 	if (strcmp("edf", coder->param->scheduler) == 0)
-	{
-		deadline = coder->last_compiled + coder->param->time_to_burnout;
-		if (dongle->dongle_queue[0].coder_id == -1)
-		{
-			dongle->dongle_queue[0].coder_id = coder->id;
-			dongle->dongle_queue[0].deadline = deadline;
-		}
-		else if ((dongle->dongle_queue[0].coder_id != -1)
-			&& (dongle->dongle_queue[0].deadline > deadline)
-			&& (dongle->dongle_queue[0].is_compiling == 0))
-		{
-			dongle->dongle_queue[1].coder_id = dongle->dongle_queue[0].coder_id;
-			dongle->dongle_queue[1].deadline = dongle->dongle_queue[0].deadline;
-			dongle->dongle_queue[1].is_compiling = 0;
-			dongle->dongle_queue[0].deadline = deadline;
-			dongle->dongle_queue[0].coder_id = coder->id;
-			dongle->dongle_queue[0].is_compiling = 0;
-		}
-		else
-		{
-			dongle->dongle_queue[1].coder_id = coder->id;
-			dongle->dongle_queue[1].deadline = deadline;
-		}
-	}
+		update_dongle_queue(dongle, coder);
 	pthread_mutex_unlock(&dongle->dongle_lock);
+}
+int	take_one_dongle(t_dongle *dongle, t_coder *coder)
+{
+	update_dongle_queue(dongle, coder);
+	if (wait_for_dongle(dongle, coder) == 1)
+		return (1);
+	pthread_mutex_lock(&dongle->dongle_lock);
+	dongle->dongle_queue[0].is_compiling = 1;
+	pthread_mutex_unlock(&dongle->dongle_lock);
+	print_logs("has taken a dongle", coder);
 	return (0);
 }
-
 int	get_dongles(t_coder *coder)
 {
 	if (coder->id % 2 == 0)
 	{
-		update_dongle_queue(coder->left_dongle, coder);
-		if (wait_for_dongle(coder->left_dongle, coder) == 1)
+		if (take_one_dongle(coder->left_dongle, coder) == 1)
 			return (1);
-		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		coder->left_dongle->dongle_queue[0].is_compiling = 1;
-		pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
-		print_logs("has taken a dongle", coder);
-		update_dongle_queue(coder->right_dongle, coder);
-		if (wait_for_dongle(coder->right_dongle, coder) == 1)
+		if (take_one_dongle(coder->right_dongle, coder) == 1)
 			return (1);
-		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
-		coder->right_dongle->dongle_queue[0].is_compiling = 1;
-		pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
-		print_logs("has taken a dongle", coder);
 	}
 	else
 	{
-		update_dongle_queue(coder->right_dongle, coder);
-		if (wait_for_dongle(coder->right_dongle, coder) == 1)
+		if (take_one_dongle(coder->right_dongle, coder) == 1)
 			return (1);
-		pthread_mutex_lock(&coder->right_dongle->dongle_lock);
-		coder->right_dongle->dongle_queue[0].is_compiling = 1;
-		pthread_mutex_unlock(&coder->right_dongle->dongle_lock);
-		print_logs("has taken a dongle", coder);
-		update_dongle_queue(coder->left_dongle, coder);
-		if (wait_for_dongle(coder->left_dongle, coder) == 1)
+		if (take_one_dongle(coder->left_dongle, coder) == 1)
 			return (1);
-		pthread_mutex_lock(&coder->left_dongle->dongle_lock);
-		coder->left_dongle->dongle_queue[0].is_compiling = 1;
-		pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
-		print_logs("has taken a dongle", coder);
 	}
 	return (0);
 }

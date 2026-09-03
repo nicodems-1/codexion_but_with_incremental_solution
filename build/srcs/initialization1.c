@@ -6,18 +6,19 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 04:08:25 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/09/03 16:18:53 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	lone_coder(t_coder *coder)
+void	*lone_coder(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->left_dongle->dongle_lock);
 	print_logs("has taken a dongle", coder);
 	pthread_mutex_unlock(&coder->left_dongle->dongle_lock);
 	ft_usleep(coder->param->time_to_burnout, coder);
+	return(NULL);
 }
 
 void	*routine(void *arguments)
@@ -31,7 +32,7 @@ void	*routine(void *arguments)
 			&coder->param->lock_race);
 	pthread_mutex_unlock(&coder->param->lock_race);
 	if (coder->param->number_of_coders == 1)
-		lone_coder(coder);
+		return(lone_coder(coder));
 	while (1)
 	{
 		if (compilation(coder) != 0)
@@ -59,6 +60,7 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 		coder[index].id = index + 1;
 		coder[index].times_compiled = 0;
 		coder[index].last_compiled = 0;
+		coder[index].has_compiled = 0;
 		if (pthread_create(&coder[index].coder, NULL, &routine,
 				&coder[index]) != 0)
 			return (clean_exit(param, 5, index + 1));

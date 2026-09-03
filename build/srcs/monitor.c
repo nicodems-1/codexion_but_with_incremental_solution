@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 03:04:29 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 04:48:55 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/09/03 16:11:24 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*burnout(t_coder *coders, int coder_id)
 	pthread_mutex_lock(&coders->param->print_lock);
 	pthread_mutex_lock(&coders[0].param->update_status);
 	coders[0].param->status = BURNOUT;
-	printf("%lu %d has burnout", current_time(coders[0].param), coder_id + 1);
+	printf("%lu %d burned out", current_time(coders[0].param), coder_id + 1);
 	pthread_mutex_unlock(&coders->param->print_lock);
 	pthread_mutex_unlock(&coders[0].param->update_status);
 	pthread_mutex_unlock(&coders[coder_id].coder_mutex);
@@ -31,7 +31,7 @@ void	*finished(t_coder *coders, int coder_id)
 	pthread_mutex_lock(&coders->param->print_lock);
 	pthread_mutex_lock(&coders[0].param->update_status);
 	coders[0].param->status = FINISHED;
-	printf("finished");
+	// printf("finished");
 	pthread_mutex_unlock(&coders->param->print_lock);
 	pthread_mutex_unlock(&coders[0].param->update_status);
 	pthread_mutex_unlock(&coders[coder_id].coder_mutex);

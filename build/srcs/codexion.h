@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:44:33 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 04:19:56 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/09/03 16:01:57 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_coder
 	int					id;
 	int					last_compiled;
 	int					times_compiled;
+	int					has_compiled;
 	pthread_t			coder;
 	pthread_mutex_t		coder_mutex;
 	t_param				*param;

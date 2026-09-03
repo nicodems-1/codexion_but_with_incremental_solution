@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 01:44:24 by niverdie          #+#    #+#             */
-/*   Updated: 2026/08/22 05:14:56 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/09/03 16:03:56 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	edf_queue(t_dongle *dongle, t_coder *coder)
 		dongle->dongle_queue[0].coder_id = coder->id;
 		dongle->dongle_queue[0].deadline = deadline;
 	}
-	else if ((dongle->dongle_queue[0].coder_id != -1)
-		&& (dongle->dongle_queue[0].deadline > deadline)
-		&& (dongle->dongle_queue[0].is_compiling == 0))
+	else if (((dongle->dongle_queue[0].deadline > deadline)
+			|| ((dongle->dongle_queue[0].deadline == deadline)
+				&& dongle->dongle_queue[0].coder_id > coder->id)))
 	{
 		dongle->dongle_queue[1].coder_id = dongle->dongle_queue[0].coder_id;
 		dongle->dongle_queue[1].deadline = dongle->dongle_queue[0].deadline;
@@ -60,8 +60,11 @@ void	edf_queue(t_dongle *dongle, t_coder *coder)
 void	update_dongle_queue(t_dongle *dongle, t_coder *coder)
 {
 	pthread_mutex_lock(&coder->coder_mutex);
-	if (coder->last_compiled == 0)
+	if (coder->has_compiled == 0)
+	{
 		coder->last_compiled = current_time(coder->param);
+		coder->has_compiled = 1;
+	}
 	pthread_mutex_unlock(&coder->coder_mutex);
 	pthread_mutex_lock(&dongle->dongle_lock);
 	if (strcmp("fifo", coder->param->scheduler) == 0)

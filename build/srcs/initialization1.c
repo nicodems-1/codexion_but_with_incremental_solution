@@ -6,7 +6,7 @@
 /*   By: niverdie <niverdie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 12:57:16 by niverdie          #+#    #+#             */
-/*   Updated: 2026/09/03 16:28:43 by niverdie         ###   ########.fr       */
+/*   Updated: 2026/09/03 19:15:30 by niverdie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	init_coders(t_param *param, t_coder *coder, t_dongle *dongle)
 		coder[index].has_compiled = 0;
 		if (pthread_create(&coder[index].coder, NULL, &routine,
 				&coder[index]) != 0)
-			return (clean_exit(param, 5, index + 1));
+			return (clean_exit(param, 5, index));
 		index++;
 	}
 	return (0);

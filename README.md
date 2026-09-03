@@ -33,8 +33,6 @@ Run the program with the following arguments:
 ## Resources
 **Classic References:**
 *   [POSIX Threads Programming (LLNL)](https://hpc-tutorials.llnl.gov/posix/) - The ultimate guide to pthreads.
-*   [Operating Systems: Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/) - Specifically the chapters on Concurrency, Locks, and Condition Variables.
-*   *Modern Operating Systems* by Andrew S. Tanenbaum - Reference for scheduling algorithms (EDF/FIFO) and Coffman's conditions.
 
 **AI Usage:**
 AI (Google Gemini) was utilized during this project as a purely educational assistant. It was specifically used to:
@@ -50,6 +48,7 @@ This project tackles several critical concurrency and real-time scheduling chall
 *   **Cooldown Handling:** Dongles enforce a strict cooldown period post-compilation. This adds a layer of "Hold and Wait" complexity, requiring coders to accurately gauge resource availability without blocking higher-priority neighbors prematurely.
 *   **Precise Burnout Detection:** A dedicated, detached monitor thread constantly iterates over the coders' states. It compares the current timestamp against the `last_compiled` timestamp with sub-millisecond precision to halt the simulation the exact moment a burnout occurs.
 *   **Log Serialization:** Console output is strictly protected by a global logging mutex. This ensures that timestamps and actions do not overlap or interleave, maintaining a coherent and chronological output even with hundreds of active threads.
+*   **Tie Breaker implementation:** In edf when two deadline are equals, the coder written as the first one on the stack is always gonna be the one with the shortest id
 
 ## Thread synchronization mechanisms
 To orchestrate the simulation safely, several threading primitives are employed:
